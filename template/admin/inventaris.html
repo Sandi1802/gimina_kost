@@ -1,0 +1,161 @@
+{% extends "admin/layout.html" %}
+{% block title %}Inventaris Barang - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Inventaris Barang</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Inventaris</span>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInventarisModal">
+    <i class="fas fa-plus"></i> Tambah Barang
+  </button>
+</div>
+
+<div class="row">
+  <!-- Jatinangor -->
+  <div class="col-lg-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header-custom d-flex justify-content-between align-items-center" style="background:#f0fdf4;">
+        <h5 class="m-0 text-success fs-6"><i class="fas fa-building me-2"></i>Jatinangor</h5>
+        <span class="badge bg-success">{{ inv_jatinangor|length }} Item</span>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-sm datatable">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Barang</th>
+                <th>Jml</th>
+                <th>Kondisi</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in inv_jatinangor %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ item.nama_barang }}</strong></td>
+                <td>{{ item.jumlah }}</td>
+                <td>
+                  {% if item.kondisi == 'Baik' %}
+                    <span class="badge badge-status active">Baik</span>
+                  {% elif item.kondisi == 'Perbaikan' %}
+                    <span class="badge badge-status draft">Perbaikan</span>
+                  {% else %}
+                    <span class="badge badge-status belum">Rusak</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ url_for('admin_inventaris_delete', id=item.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?');">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gunung Batu -->
+  <div class="col-lg-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header-custom d-flex justify-content-between align-items-center" style="background:#fef3c7;">
+        <h5 class="m-0 text-warning fs-6"><i class="fas fa-home me-2"></i>Gunung Batu</h5>
+        <span class="badge bg-warning text-dark">{{ inv_gunungbatu|length }} Item</span>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-sm datatable">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Barang</th>
+                <th>Jml</th>
+                <th>Kondisi</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in inv_gunungbatu %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ item.nama_barang }}</strong></td>
+                <td>{{ item.jumlah }}</td>
+                <td>
+                  {% if item.kondisi == 'Baik' %}
+                    <span class="badge badge-status active">Baik</span>
+                  {% elif item.kondisi == 'Perbaikan' %}
+                    <span class="badge badge-status draft">Perbaikan</span>
+                  {% else %}
+                    <span class="badge badge-status belum">Rusak</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ url_for('admin_inventaris_delete', id=item.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?');">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Inventaris -->
+<div class="modal fade" id="addInventarisModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_inventaris_add') }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Barang Inventaris</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Lokasi Kos</label>
+          <select name="location_id" class="form-select" required>
+            <option value="">-- Pilih Lokasi --</option>
+            {% for l in lokasi %}
+              <option value="{{ l.id }}">{{ l.nama_lokasi }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nama Barang</label>
+          <input type="text" name="nama_barang" class="form-control" required placeholder="Contoh: AC Daikin 1/2 PK">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jumlah</label>
+          <input type="number" name="jumlah" class="form-control" required value="1" min="1">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Kondisi</label>
+          <select name="kondisi" class="form-select">
+            <option value="Baik">Baik</option>
+            <option value="Perbaikan">Sedang Perbaikan</option>
+            <option value="Rusak">Rusak</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Keterangan (Opsional)</label>
+          <textarea name="keterangan" class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Barang</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

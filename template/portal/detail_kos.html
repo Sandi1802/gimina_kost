@@ -1,0 +1,246 @@
+{% extends 'layout.html' %}
+{% block title %}Detail Gimina Kost{% endblock %}
+{% block content %}
+<div class="mb-6">
+    <a href="{{ url_for('public_home') }}" class="text-gold-600 hover:text-gold-700 inline-flex items-center">
+        &larr; Kembali ke Beranda
+    </a>
+</div>
+
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+    <!-- Header Image -->
+    <div class="h-64 md:h-96 bg-gold-100 relative flex items-center justify-center overflow-hidden">
+        {% if image_file %}
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent z-10"></div>
+            <img src="{{ url_for('static', filename='img/' + image_file) }}" alt="{{ kos_name }}" class="w-full h-full object-cover">
+        {% else %}
+            <svg class="w-24 h-24 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+        {% endif %}
+    </div>
+
+    <div class="p-8">
+        <div class="md:flex md:items-center md:justify-between mb-6">
+            <div>
+                <h1 class="text-3xl font-extrabold text-gray-900">{{ kos_name }}</h1>
+                <p class="text-gray-500 mt-2">{{ address }}</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <span class="text-3xl font-bold text-gold-600">{{ price }}</span>
+                <span class="text-gray-500">/ bulan</span>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 pt-6 mt-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Fasilitas Kos</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {% for facility in facilities %}
+                <div class="flex items-center space-x-2 text-gray-700">
+                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                    <span>{{ facility }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-6 mt-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 font-serif">Pilihan Kamar</h2>
+            
+            {% if not session.get('penghuni_id') %}
+            <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex items-start">
+                <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div>
+                    <p class="text-sm font-medium">Anda belum masuk ke akun.</p>
+                    <p class="text-sm mt-1">Silakan <a href="{{ url_for('pendaftaran') }}" class="font-bold underline hover:text-blue-600">Daftar Akun</a> atau <a href="{{ url_for('login_penghuni') }}" class="font-bold underline hover:text-blue-600">Masuk</a> terlebih dahulu untuk bisa mengajukan sewa kamar secara spesifik.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for room in rooms %}
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
+                    <div class="h-40 bg-gray-200 relative">
+                        <!-- Dummy room image -->
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&q=80" class="w-full h-full object-cover">
+                        <div class="absolute top-2 right-2 px-2.5 py-1 rounded text-xs font-bold uppercase
+                            {% if room.status == 'AVAILABLE' %} bg-green-500 text-white
+                            {% elif room.status == 'OCCUPIED' %} bg-red-500 text-white
+                            {% else %} bg-gray-500 text-white {% endif %}
+                        ">
+                            {% if room.status == 'AVAILABLE' %}Tersedia
+                            {% elif room.status == 'OCCUPIED' %}Terisi
+                            {% else %}{{ room.status }}{% endif %}
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 font-serif">Kamar {{ room.room_number }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">{{ room.room_type }}</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gold-600 font-bold text-lg my-3">Rp {{ "{:,.0f}".format(room.monthly_rate).replace(',', '.') }} <span class="text-xs text-gray-500 font-normal">/ bln</span></p>
+                        
+                        <div class="text-xs text-gray-600 flex-1 mb-4">
+                            <span class="font-semibold block mb-1">Fasilitas Kamar:</span>
+                            {{ room.facilities }}
+                        </div>
+                        
+                        <div class="mt-auto">
+                            {% if room.status == 'AVAILABLE' %}
+                                {% if session.get('penghuni_id') %}
+                                    <a href="{{ url_for('ajukan_sewa', room_id=room.id) }}" class="block w-full text-center px-4 py-2 border border-transparent text-sm font-bold rounded-md text-white bg-gold-600 hover:bg-gold-700 transition">
+                                        Ajukan Sewa
+                                    </a>
+                                {% else %}
+                                    <a href="{{ url_for('pendaftaran') }}" class="block w-full text-center px-4 py-2 border border-gold-600 text-sm font-bold rounded-md text-gold-600 bg-white hover:bg-gold-50 transition">
+                                        Daftar Akun Dulu
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <button onclick="openModal('Kamar {{ room.room_number }} - {{ room.room_type }}')" class="block w-full text-center px-4 py-2 border border-gray-300 text-sm font-bold rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
+                                    Daftar Tunggu
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-6 mt-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Deskripsi</h2>
+            <p class="text-gray-700 leading-relaxed">
+                {{ description }}
+            </p>
+        </div>
+
+        <!-- Narahubung Section -->
+        <div class="border-t border-gray-200 pt-6 mt-6">
+            <div class="bg-green-50 rounded-lg p-6 border border-green-100 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900">Dikelola oleh Admin Gimina</h3>
+                        <p class="text-gray-600 text-sm">Ada pertanyaan? Hubungi kami sekarang.</p>
+                    </div>
+                </div>
+                <div>
+                    <a href="https://wa.me/6281234567890" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-bold rounded-md text-white bg-green-600 hover:bg-green-700">
+                        Chat WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-green-600 transition transform hover:scale-110 z-50">
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<!-- Modal Daftar Tunggu -->
+<div id="waitingListModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <!-- Modal panel -->
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Form Daftar Tunggu</h3>
+                    <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mb-6">Isi form ini agar tim kami bisa menghubungimu jika ada kamar kosong.</p>
+                
+                <form id="daftarTungguForm" method="POST" action="{{ url_for('submit_daftar_tunggu') }}">
+                    <input type="hidden" name="lokasi_id" value="{{ lokasi_id }}">
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Nama Kos</label>
+                        <input type="text" value="{{ kos_name }}" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-50 text-gray-500 cursor-not-allowed sm:text-sm">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Tipe Kamar</label>
+                        <input type="text" id="modalTipeKamar" name="tipe_kamar" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-50 text-gray-500 cursor-not-allowed sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-gold-500 focus:border-gold-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Nomor Handphone (WhatsApp)</label>
+                        <input type="text" name="no_hp" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-gold-500 focus:border-gold-500 sm:text-sm" placeholder="Contoh: 08123456789">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Apakah sudah ada tanggal masuk kos?</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" name="status_tanggal" value="Iya, sudah ada tanggal pasti" id="tgl_pasti" onchange="toggleDateInput()" class="focus:ring-gold-500 h-4 w-4 text-gold-600 border-gray-300">
+                                <label for="tgl_pasti" class="ml-3 block text-sm text-gray-700">Iya, sudah ada tanggal pasti</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="status_tanggal" value="Secepatnya" id="tgl_secepatnya" onchange="toggleDateInput()" class="focus:ring-gold-500 h-4 w-4 text-gold-600 border-gray-300" checked>
+                                <label for="tgl_secepatnya" class="ml-3 block text-sm text-gray-700">Secepatnya</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="status_tanggal" value="Belum ada perkiraan" id="tgl_belum" onchange="toggleDateInput()" class="focus:ring-gold-500 h-4 w-4 text-gold-600 border-gray-300">
+                                <label for="tgl_belum" class="ml-3 block text-sm text-gray-700">Belum ada tanggal atau perkiraan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 hidden" id="tanggalMasukContainer">
+                        <label class="block text-sm font-medium text-gray-700">Tanggal Masuk Kos</label>
+                        <input type="date" name="tanggal_masuk" id="tanggalMasukInput" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-gold-500 focus:border-gold-500 sm:text-sm">
+                    </div>
+
+                    <div class="mt-5 sm:mt-6">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-3 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm">
+                            Kirim
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(tipeKamar) {
+        document.getElementById('modalTipeKamar').value = tipeKamar;
+        document.getElementById('waitingListModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('waitingListModal').classList.add('hidden');
+    }
+
+    function toggleDateInput() {
+        const tglPasti = document.getElementById('tgl_pasti').checked;
+        const container = document.getElementById('tanggalMasukContainer');
+        const input = document.getElementById('tanggalMasukInput');
+        
+        if (tglPasti) {
+            container.classList.remove('hidden');
+            input.required = true;
+        } else {
+            container.classList.add('hidden');
+            input.required = false;
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>{% block title %}Gimina Kost Admin{% endblock %}</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Custom CSS (Formais style) -->
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  
+  <!-- DataTables CSS -->
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  <div class="app-wrapper" id="appWrapper">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Gimina Kost Logo" style="max-height: 50px; width: auto;">
+      </div>
+
+      <div class="sidebar-user">
+        <div class="user-avatar">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{ session.get('user_name', 'Admin') }}</span>
+          <span class="user-role">{{ session.get('role', 'Owner') }}</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Dashboard -->
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+          <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+        </a>
+
+        <div class="nav-section-title">Manajemen Kos</div>
+        
+        <!-- Penghuni -->
+        <a href="{{ url_for('admin_penghuni') }}" class="nav-link {% if request.endpoint == 'admin_penghuni' %}active{% endif %}">
+          <i class="fas fa-users"></i><span>Data Penghuni</span>
+        </a>
+
+        <!-- Kamar Jatinangor -->
+        <a href="{{ url_for('admin_kamar_jatinangor') }}" class="nav-link {% if request.endpoint == 'admin_kamar_jatinangor' %}active{% endif %}">
+          <i class="fas fa-building"></i><span>Kamar Jatinangor</span>
+        </a>
+
+        <!-- Kamar Gunung Batu -->
+        <a href="{{ url_for('admin_kamar_gunungbatu') }}" class="nav-link {% if request.endpoint == 'admin_kamar_gunungbatu' %}active{% endif %}">
+          <i class="fas fa-home"></i><span>Kamar Gunung Batu</span>
+        </a>
+
+        <!-- Kontrak Sewa -->
+        <a href="{{ url_for('admin_kontrak') }}" class="nav-link {% if request.endpoint == 'admin_kontrak' %}active{% endif %}">
+          <i class="fas fa-file-contract"></i><span>Kontrak Sewa</span>
+        </a>
+
+        <div class="nav-section-title">Keuangan & Laporan</div>
+        
+        <!-- Tagihan -->
+        <a href="{{ url_for('admin_tagihan') }}" class="nav-link {% if request.endpoint == 'admin_tagihan' %}active{% endif %}">
+          <i class="fas fa-file-invoice-dollar"></i><span>Tagihan (Invoice)</span>
+        </a>
+
+        <!-- Pembayaran -->
+        <a href="{{ url_for('admin_pembayaran') }}" class="nav-link {% if request.endpoint == 'admin_pembayaran' %}active{% endif %}">
+          <i class="fas fa-money-bill-wave"></i><span>Pembayaran</span>
+        </a>
+
+        <!-- Inventaris -->
+        <a href="{{ url_for('admin_inventaris') }}" class="nav-link {% if request.endpoint == 'admin_inventaris' %}active{% endif %}">
+          <i class="fas fa-boxes"></i><span>Inventaris Barang</span>
+        </a>
+
+        <!-- Keluhan -->
+        <a href="{{ url_for('admin_keluhan') }}" class="nav-link {% if request.endpoint == 'admin_keluhan' %}active{% endif %}">
+          <i class="fas fa-tools"></i><span>Keluhan & Perbaikan</span>
+        </a>
+
+      </nav>
+      
+      <div class="sidebar-footer">
+        <a href="{{ url_for('admin_logout') }}" class="nav-link logout-link w-100 d-block text-center" style="font-size:14px; font-weight:600;">
+          <i class="fas fa-sign-out-alt me-2"></i> Log Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+      <header class="topbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="topbar-right">
+          <div class="topbar-actions">
+            <!-- Profile Dropdown -->
+            <div class="topbar-action-item dropdown">
+              <a href="#" class="nav-icon dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle" style="font-size: 24px;"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end profile-dropdown-menu" aria-labelledby="profileDropdown">
+                <li class="profile-dropdown-header">
+                  Halo, {{ session.get('user_name', 'Admin')|upper }}
+                </li>
+                <li><hr class="profile-dropdown-divider"></li>
+                <li>
+                  <a class="profile-dropdown-item logout-link" href="{{ url_for('admin_logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-area">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% elif category == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </div>
+
+      <footer class="main-footer">
+        <span>&copy; 2026 Gimina Kost by ASR Group</span>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+  <script>
+    // Initialize DataTables
+    $(document).ready(function() {
+      if ($('.datatable').length > 0) {
+        $('.datatable').DataTable({
+          responsive: true,
+          language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+            infoFiltered: "(disaring dari _MAX_ total data)",
+            paginate: {
+              first: "Pertama",
+              last: "Terakhir",
+              next: "Selanjutnya",
+              previous: "Sebelumnya"
+            },
+            zeroRecords: "Tidak ada data yang ditemukan"
+          }
+        });
+      }
+    });
+
+    // Sidebar toggle
+    var toggle = document.getElementById('sidebarToggle');
+    var wrapper = document.getElementById('appWrapper');
+    if (toggle) {
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (window.innerWidth <= 992) {
+          wrapper.classList.toggle('sidebar-open');
+        } else {
+          wrapper.classList.toggle('sidebar-collapsed');
+        }
+      });
+    }
+
+    // Close sidebar on mobile when clicking outside
+    document.addEventListener('click', function(e) {
+      if (window.innerWidth <= 992 && wrapper.classList.contains('sidebar-open')) {
+        var sidebar = document.getElementById('sidebar');
+        if (!sidebar.contains(e.target) && e.target !== toggle) {
+          wrapper.classList.remove('sidebar-open');
+        }
+      }
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

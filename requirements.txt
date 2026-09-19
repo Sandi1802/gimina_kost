@@ -1,7 +1,8 @@
 Flask
-pymysql
+psycopg2-binary
 reportlab
 pandas
 openpyxl
 gunicorn
 python-dotenv
+werkzeug

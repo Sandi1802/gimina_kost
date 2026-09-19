@@ -1,0 +1,55 @@
+{% extends "admin/layout.html" %}
+{% block title %}Kontrak Sewa - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Kontrak Sewa</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Kontrak</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header-custom">
+    <h5>Daftar Kontrak Sewa Aktif</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Penghuni</th>
+            <th>Lokasi</th>
+            <th>Kamar</th>
+            <th>Tgl Mulai</th>
+            <th>Biaya Sewa</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ks in kontrak %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ ks.tenant_name }}</strong></td>
+            <td><span class="badge bg-secondary">{{ ks.nama_lokasi }}</span></td>
+            <td>{{ ks.room_number }}</td>
+            <td>{{ ks.start_date }}</td>
+            <td>Rp {{ "{:,.0f}".format(ks.monthly_rate) }}</td>
+            <td>
+              {% if ks.status == 'ACTIVE' %}
+                <span class="badge badge-status active">Aktif</span>
+              {% else %}
+                <span class="badge badge-status belum">Tidak Aktif</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "admin/layout.html" %}
+{% block title %}Keluhan & Perbaikan - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Keluhan & Perbaikan</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Keluhan</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header-custom">
+    <h5>Daftar Keluhan Penghuni</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kamar</th>
+            <th>Penghuni</th>
+            <th>Kategori</th>
+            <th>Keluhan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for k in keluhan %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ k.room_number }}</strong></td>
+            <td>{{ k.tenant_name }}</td>
+            <td>{{ k.category }}</td>
+            <td>
+              <strong>{{ k.title }}</strong><br>
+              <small class="text-muted">{{ k.description }}</small>
+            </td>
+            <td>
+              {% if k.status == 'NEW' %}
+                <span class="badge badge-status belum">Baru</span>
+              {% elif k.status == 'IN_PROGRESS' %}
+                <span class="badge badge-status draft">Diproses</span>
+              {% elif k.status == 'RESOLVED' %}
+                <span class="badge badge-status active">Selesai</span>
+              {% else %}
+                <span class="badge bg-secondary">{{ k.status }}</span>
+              {% endif %}
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#prosesModal{{ k.id }}"><i class="fas fa-tools"></i> Update</button>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modals outside the table -->
+{% for k in keluhan %}
+<div class="modal fade" id="prosesModal{{ k.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_keluhan_proses', id=k.id) }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Status Keluhan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Status Saat Ini: <strong>{{ k.status }}</strong></label>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ubah Status Menjadi</label>
+          <select name="status" class="form-select" required>
+            <option value="IN_PROGRESS" {% if k.status == 'IN_PROGRESS' %}selected{% endif %}>Diproses (Tukang/Teknisi sedang bekerja)</option>
+            <option value="RESOLVED" {% if k.status == 'RESOLVED' %}selected{% endif %}>Selesai (Sudah Diperbaiki)</option>
+            <option value="REJECTED" {% if k.status == 'REJECTED' %}selected{% endif %}>Ditolak / Tidak Valid</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

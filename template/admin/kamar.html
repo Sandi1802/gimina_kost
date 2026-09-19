@@ -1,0 +1,90 @@
+{% extends "admin/layout.html" %}
+{% block title %}Kelola Kamar - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Kelola Kamar & Lokasi</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Kamar</span>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKamarModal">
+    <i class="fas fa-plus"></i> Tambah Kamar
+  </button>
+</div>
+
+<div class="card">
+  <div class="card-header-custom d-flex justify-content-between align-items-center {% if lokasi_id == 1 %}bg-success-subtle{% else %}bg-warning-subtle{% endif %}">
+    <h5 class="m-0 {% if lokasi_id == 1 %}text-success{% else %}text-warning{% endif %} fs-6">
+      <i class="fas {% if lokasi_id == 1 %}fa-building{% else %}fa-home{% endif %} me-2"></i>{{ nama_lokasi }}
+    </h5>
+    <span class="badge {% if lokasi_id == 1 %}bg-success{% else %}bg-warning text-dark{% endif %}">{{ kamar|length }} Kamar</span>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable w-100">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nomor Kamar</th>
+            <th>Harga Bulanan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for k in kamar %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ k.room_number }}</strong></td>
+            <td>Rp {{ "{:,.0f}".format(k.monthly_rate).replace(',', '.') }}</td>
+            <td>
+              {% if k.status == 'AVAILABLE' %}
+                <span class="badge badge-status active">Tersedia</span>
+              {% elif k.status == 'OCCUPIED' %}
+                <span class="badge badge-status belum">Terisi</span>
+              {% else %}
+                <span class="badge badge-status draft">Maintenance</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('admin_kamar_delete', id=k.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus kamar ini?');">
+                <i class="fas fa-trash"></i> Hapus
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Kamar -->
+<div class="modal fade" id="addKamarModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_kamar_add') }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Kamar ({{ nama_lokasi }})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="location_id" value="{{ lokasi_id }}">
+        <div class="mb-3">
+          <label class="form-label">Nomor Kamar</label>
+          <input type="text" name="room_number" class="form-control" required placeholder="Cth: A1">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Harga Bulanan (Rp)</label>
+          <input type="number" name="monthly_rate" class="form-control" required min="100000" step="10000" placeholder="Cth: 1500000">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

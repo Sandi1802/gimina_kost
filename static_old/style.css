@@ -5,10 +5,10 @@
 
 /* ===== ROOT VARIABLES ===== */
 :root {
-  --primary: #2e4325;
-  --primary-light: #a28e57;
-  --primary-hover: #8a7747;
-  --accent: #a28e57;
+  --primary: #0f4c3a;
+  --primary-light: #1D9E75;
+  --primary-hover: #178a65;
+  --accent: #1D9E75;
   --accent-light: #2ec48f;
   --success: #059669;
   --success-light: #d1fae5;
@@ -106,7 +106,7 @@ a:hover { color: var(--primary); }
 
 .user-avatar {
   width: 36px; height: 36px;
-  background: linear-gradient(135deg, #a28e57, #15805e);
+  background: linear-gradient(135deg, #1D9E75, #15805e);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; color: var(--text-white); font-weight: 600;
@@ -198,7 +198,7 @@ a:hover { color: var(--primary); }
 }
 
 .topbar-action-item .nav-icon:hover {
-  color: #a28e57;
+  color: #1D9E75;
 }
 
 .topbar-action-item .dropdown-toggle::after {
@@ -382,8 +382,8 @@ a:hover { color: var(--primary); }
 }
 
 /* Color Variations — FORMAIS Teal Theme */
-.stat-card.primary .stat-icon { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); color: #a28e57; }
-.stat-card.primary::after { background: #a28e57; }
+.stat-card.primary .stat-icon { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); color: #1D9E75; }
+.stat-card.primary::after { background: #1D9E75; }
 
 .stat-card.success .stat-icon { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); color: #10b981; }
 .stat-card.success::after { background: #10b981; }
@@ -397,8 +397,8 @@ a:hover { color: var(--primary); }
 .stat-card.info .stat-icon { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); color: #0891b2; }
 .stat-card.info::after { background: #0891b2; }
 
-.stat-card.teal .stat-icon { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); color: #a28e57; }
-.stat-card.teal::after { background: #a28e57; }
+.stat-card.teal .stat-icon { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); color: #1D9E75; }
+.stat-card.teal::after { background: #1D9E75; }
 
 /* ===== TABLES ===== */
 .table-container { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); }
@@ -461,20 +461,20 @@ a:hover { color: var(--primary); }
 .login-container { display: flex; flex-direction: row; width: 100%; max-width: 1000px; z-index: 1; margin: 20px; align-items: center; gap: 40px; }
 
 .login-left { flex: 1; padding: 40px 60px; display: flex; flex-direction: column; justify-content: center; }
-.login-badge { display: inline-block; font-size: 13px; font-weight: 500; color: #fff; background: linear-gradient(135deg, #a28e57, #15805e); padding: 6px 20px; border-radius: 6px; margin-bottom: 24px; letter-spacing: 0.5px; align-self: flex-start; }
-.login-title { font-size: 36px; font-weight: 700; color: #2e4325; line-height: 1.25; margin-bottom: 0; letter-spacing: -0.5px; position: relative; z-index: 2; }
+.login-badge { display: inline-block; font-size: 13px; font-weight: 500; color: #fff; background: linear-gradient(135deg, #1D9E75, #15805e); padding: 6px 20px; border-radius: 6px; margin-bottom: 24px; letter-spacing: 0.5px; align-self: flex-start; }
+.login-title { font-size: 36px; font-weight: 700; color: #0f4c3a; line-height: 1.25; margin-bottom: 0; letter-spacing: -0.5px; position: relative; z-index: 2; }
 
 .logo-akhlak-container { margin-top: 20px; position: relative; z-index: 1; }
 .logo-akhlak-img { width: 100%; max-width: 260px; height: auto; display: block; margin-left: -5px; }
 
 .login-right { flex: 1; display: flex; justify-content: center; align-items: center; }
 .login-form-card { width: 100%; max-width: 400px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(29,158,117,0.1), 0 1px 3px rgba(0,0,0,0.08); padding: 50px 40px; border: 1px solid rgba(29,158,117,0.15); }
-.form-title { font-size: 24px; font-weight: 700; color: #2e4325; margin-bottom: 36px; text-align: center; letter-spacing: -0.5px; }
+.form-title { font-size: 24px; font-weight: 700; color: #0f4c3a; margin-bottom: 36px; text-align: center; letter-spacing: -0.5px; }
 
 .login-form { display: flex; flex-direction: column; gap: 20px; }
-.input-group-custom { position: relative; display: flex; align-items: center; border: 1.5px solid #a28e57; border-radius: 8px; background: #fff; transition: var(--transition); }
+.input-group-custom { position: relative; display: flex; align-items: center; border: 1.5px solid #1D9E75; border-radius: 8px; background: #fff; transition: var(--transition); }
 .input-group-custom:focus-within { border-color: #15805e; box-shadow: 0 0 0 3px rgba(29,158,117,0.15); }
-.input-group-custom .input-icon { width: 44px; display: flex; justify-content: center; align-items: center; color: #a28e57; font-size: 16px; }
+.input-group-custom .input-icon { width: 44px; display: flex; justify-content: center; align-items: center; color: #1D9E75; font-size: 16px; }
 .input-group-custom .input-icon-right { width: 44px; display: flex; justify-content: center; align-items: center; color: #94a3b8; font-size: 16px; cursor: pointer; }
 .input-group-custom input { flex: 1; border: none; padding: 12px 0; outline: none; font-size: 14px; color: #334155; width: 100%; background: transparent; }
 .input-group-custom input::placeholder { color: #94a3b8; }
@@ -488,7 +488,7 @@ a:hover { color: var(--primary); }
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.btn-login-submit { width: 100%; padding: 12px; background: linear-gradient(135deg, #a28e57, #15805e); color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: var(--transition); margin-top: 10px; }
+.btn-login-submit { width: 100%; padding: 12px; background: linear-gradient(135deg, #1D9E75, #15805e); color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: var(--transition); margin-top: 10px; }
 .btn-login-submit:hover { background: linear-gradient(135deg, #15805e, #0f6b4a); box-shadow: 0 4px 12px rgba(29,158,117,0.3); }
 
 @media (max-width: 768px) {
@@ -560,7 +560,7 @@ div.dataTables_wrapper div.dataTables_length select { width: auto; display: inli
 }
 .highcharts-contextmenu .highcharts-menu-item:hover {
   background-color: #d1fae5 !important;
-  color: #2e4325 !important;
+  color: #0f4c3a !important;
 }
 .highcharts-contextmenu hr {
   border: none !important;
@@ -648,11 +648,6 @@ div.dataTables_wrapper div.dataTables_length select { width: auto; display: inli
   }
   .table-responsive {
     border: 0;
-  }
-  /* Force table scrolling by preventing text wrap */
-  .table-responsive .table th, 
-  .table-responsive .table td {
-    white-space: nowrap;
   }
 }
 

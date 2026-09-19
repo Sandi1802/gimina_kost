@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block title %}Masuk Portal Penghuni - Gimina Kost{% endblock %}
+{% block content %}
+<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        <div class="text-center">
+            <h2 class="mt-2 text-3xl font-extrabold text-gray-900">
+                Portal Penghuni
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Masuk untuk mengakses layanan keluhan dan pembayaran kos.
+            </p>
+        </div>
+        <form class="mt-8 space-y-6" method="POST">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="email_or_phone" class="sr-only">Email atau Nomor WhatsApp</label>
+                    <input id="email_or_phone" name="email_or_phone" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-gold-500 focus:border-gold-500 focus:z-10 sm:text-sm" placeholder="Email atau Nomor WhatsApp">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-gold-500 focus:border-gold-500 focus:z-10 sm:text-sm" placeholder="Password">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-gold-600 hover:bg-gold-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 shadow-md transition-colors">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="h-5 w-5 text-gold-300 group-hover:text-gold-200" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    Masuk
+                </button>
+            </div>
+            
+            <div class="text-center mt-4 border-t border-gray-200 pt-4">
+                <p class="text-sm text-gray-600">
+                    Belum punya akun? 
+                    <a href="{{ url_for('pendaftaran', next=request.args.get('next')) }}" class="font-medium text-gold-600 hover:text-gold-500">
+                        Daftar Sekarang
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

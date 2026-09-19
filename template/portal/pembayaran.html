@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block title %}Kirim Pembayaran - Kos{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Kirim Bukti Pembayaran</h2>
+        <p class="text-gray-500 mt-1">Upload bukti transfer tagihan Anda.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('public_pembayaran') }}" enctype="multipart/form-data" class="space-y-6">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Metode Pembayaran</label>
+            <select name="method" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="Transfer Bank (BCA)">Transfer Bank (BCA)</option>
+                <option value="Transfer Bank (Mandiri)">Transfer Bank (Mandiri)</option>
+                <option value="QRIS">QRIS / E-Wallet</option>
+                <option value="Cash">Tunai (Cash)</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Bukti Pembayaran (Gambar/PDF)</label>
+            <input type="file" name="proof" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" accept="image/*,application/pdf">
+        </div>
+        <div class="pt-4">
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Submit Pembayaran
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

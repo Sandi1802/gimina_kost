@@ -1,0 +1,73 @@
+{% extends "admin/layout.html" %}
+{% block title %}Pembayaran - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Manajemen Pembayaran</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Pembayaran</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header-custom">
+    <h5>Daftar Pembayaran Masuk</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Penghuni</th>
+            <th>Kamar</th>
+            <th>Periode</th>
+            <th>Nominal</th>
+            <th>Metode</th>
+            <th>Bukti</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in pembayaran %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ p.tenant_name }}</strong></td>
+            <td>{{ p.room_number }}</td>
+            <td>{{ p.period }}</td>
+            <td>Rp {{ "{:,.0f}".format(p.amount) }}</td>
+            <td>{{ p.method }}</td>
+            <td>
+              {% if p.proof_url %}
+              <a href="{{ url_for('static', filename='uploads/' + p.proof_url) }}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-image"></i> Lihat</a>
+              {% else %}
+              -
+              {% endif %}
+            </td>
+            <td>
+              {% if p.status == 'PAID' %}
+                <span class="badge badge-status active">Lunas</span>
+              {% elif p.status == 'PENDING' %}
+                <span class="badge badge-status draft">Validasi</span>
+              {% else %}
+                <span class="badge badge-status belum">Ditolak</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if p.status == 'PENDING' %}
+              <form action="{{ url_for('admin_pembayaran_verify', id=p.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-outline-success" title="Verifikasi" onclick="return confirm('Verifikasi pembayaran ini?');"><i class="fas fa-check"></i></button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

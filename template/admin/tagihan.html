@@ -1,0 +1,101 @@
+{% extends "admin/layout.html" %}
+{% block title %}Tagihan - Gimina Kost{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Manajemen Tagihan (Invoice)</h1>
+    <div class="breadcrumb-custom">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> / <span>Tagihan</span>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTagihanModal">
+    <i class="fas fa-plus"></i> Buat Tagihan
+  </button>
+</div>
+
+<div class="card">
+  <div class="card-header-custom">
+    <h5>Daftar Tagihan Penghuni</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead>
+          <tr>
+            <th>ID (Inv)</th>
+            <th>Penghuni</th>
+            <th>Kamar</th>
+            <th>Periode</th>
+            <th>Nominal</th>
+            <th>Jatuh Tempo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in tagihan %}
+          <tr>
+            <td><strong>#INV-{{ t.id }}</strong></td>
+            <td>{{ t.tenant_name }}</td>
+            <td><span class="badge bg-secondary">{{ t.nama_lokasi }}</span> {{ t.room_number }}</td>
+            <td>{{ t.period }}</td>
+            <td>Rp {{ "{:,.0f}".format(t.amount) }}</td>
+            <td>{{ t.due_date }}</td>
+            <td>
+              {% if t.status == 'PAID' %}
+                <span class="badge badge-status active">Lunas</span>
+              {% elif t.status == 'PENDING' %}
+                <span class="badge badge-status draft">Validasi</span>
+              {% elif t.status == 'UNPAID' %}
+                <span class="badge badge-status belum">Belum Bayar</span>
+              {% else %}
+                <span class="badge bg-danger">{{ t.status }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Buat Tagihan -->
+<div class="modal fade" id="addTagihanModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_tagihan_add') }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Buat Tagihan Baru</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Pilih Kontrak Aktif</label>
+          <select name="contract_id" class="form-select" required>
+            <option value="">-- Pilih Kontrak --</option>
+            {% for k in kontrak %}
+              <option value="{{ k.id }}">{{ k.full_name }} - Kamar {{ k.room_number }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Periode (Contoh: Bulan 2 - Sept 2026)</label>
+          <input type="text" name="period" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nominal (Rp)</label>
+          <input type="number" name="amount" class="form-control" required value="1500000">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tanggal Jatuh Tempo</label>
+          <input type="date" name="due_date" class="form-control" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Tagihan</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
