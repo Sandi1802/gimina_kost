@@ -510,9 +510,14 @@ def admin_penghuni():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT p.*, d.document_url as ktp_url
+        SELECT p.*, d.document_url as ktp_url,
+            k.room_number as kamar_diajukan,
+            l.nama_lokasi as lokasi_diajukan
         FROM penghuni p
         LEFT JOIN dokumen_penghuni d ON p.id = d.tenant_id AND d.document_type = 'KTP'
+        LEFT JOIN kontrak_sewa ks ON p.id = ks.tenant_id AND ks.status IN ('PENDING', 'ACTIVE')
+        LEFT JOIN kamar k ON ks.room_id = k.id
+        LEFT JOIN lokasi_kos l ON k.location_id = l.id
         ORDER BY p.id DESC
     ''')
     penghuni = cursor.fetchall()

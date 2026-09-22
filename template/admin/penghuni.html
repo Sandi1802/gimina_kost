@@ -26,6 +26,7 @@
             <th>Dokumen</th>
             <th>No HP</th>
             <th>Pekerjaan</th>
+            <th>Kamar Diajukan</th>
             <th>Status</th>
             <th>Aksi</th>
           </tr>
@@ -46,6 +47,16 @@
             <td>{{ p.phone or '-' }}</td>
             <td>{{ p.occupation or '-' }}</td>
             <td>
+              {% if p.kamar_diajukan %}
+                <span class="badge bg-primary">
+                  <i class="fas fa-door-closed me-1"></i>
+                  {{ p.lokasi_diajukan }} - {{ p.kamar_diajukan }}
+                </span>
+              {% else %}
+                <span class="text-muted small">Belum mengajukan</span>
+              {% endif %}
+            </td>
+            <td>
               {% if p.status == 'ACTIVE' %}
                 <span class="badge badge-status active">Aktif</span>
               {% elif p.status == 'PENDING' %}
@@ -57,7 +68,7 @@
             <td>
               <div class="d-flex gap-1">
                 {% if p.status == 'PENDING' %}
-                  <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal{{ p.id }}"><i class="fas fa-check"></i></button>
+                  <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal{{ p.id }}" title="Setujui"><i class="fas fa-check"></i></button>
                 {% elif p.status == 'ACTIVE' %}
                   <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}" title="Checkout"><i class="fas fa-sign-out-alt"></i></button>
                 {% endif %}
