@@ -73,12 +73,10 @@
                   <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}" title="Checkout"><i class="fas fa-sign-out-alt"></i></button>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPenghuniModal{{ p.id }}" title="Edit"><i class="fas fa-edit"></i></button>
-                <a href="{{ url_for('admin_penghuni_delete', id=p.id) }}" 
-                   class="btn btn-sm btn-outline-danger" 
-                   title="Hapus"
-                   onclick="return confirm('Hapus penghuni {{ p.full_name }}? Semua data terkait akan ikut terhapus!');">
+                <button class="btn btn-sm btn-outline-danger" title="Hapus"
+                  onclick="showDeleteConfirm('{{ p.full_name }}', '{{ url_for('admin_penghuni_delete', id=p.id) }}')">
                   <i class="fas fa-trash"></i>
-                </a>
+                </button>
               </div>
             </td>
           </tr>          {% endfor %}
@@ -193,4 +191,63 @@
 </div>
 
 {% endfor %}
+
+<!-- ===== MODAL KONFIRMASI HAPUS (Profesional) ===== -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+      <!-- Header dengan ikon bahaya -->
+      <div class="modal-header border-0 pb-0" style="background: #fff5f5; padding: 28px 28px 16px;">
+        <div class="d-flex align-items-center gap-3">
+          <div style="width: 52px; height: 52px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fas fa-trash-alt text-danger" style="font-size: 20px;"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-gray-900 mb-0" style="font-size: 17px; color: #111827;">Hapus Data Penghuni?</h5>
+            <p class="text-muted mb-0 mt-1" style="font-size: 13px;">Tindakan ini tidak dapat dibatalkan</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; top: 16px; right: 16px;"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body px-4 py-3" style="background: #fff;">
+        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px 16px;">
+          <p class="mb-1" style="font-size: 14px; color: #374151;">
+            Anda akan menghapus penghuni:
+          </p>
+          <p class="mb-2 fw-bold" style="font-size: 16px; color: #111827;" id="deleteTargetName">—</p>
+          <p class="mb-0" style="font-size: 13px; color: #6b7280;">
+            <i class="fas fa-exclamation-circle text-danger me-1"></i>
+            Semua data terkait (dokumen KTP, riwayat kontrak) akan <strong>ikut terhapus permanen</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 px-4 pb-4 pt-2 gap-2" style="background: #fff;">
+        <button type="button" class="btn btn-light fw-semibold px-4" data-bs-dismiss="modal"
+          style="border: 1px solid #e5e7eb; border-radius: 10px; color: #374151;">
+          <i class="fas fa-times me-1"></i> Batal
+        </button>
+        <a id="deleteConfirmBtn" href="#" class="btn btn-danger fw-semibold px-4"
+          style="border-radius: 10px; background: #dc2626; border-color: #dc2626;">
+          <i class="fas fa-trash-alt me-1"></i> Ya, Hapus Sekarang
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block extra_js %}
+<script>
+function showDeleteConfirm(name, url) {
+  document.getElementById('deleteTargetName').textContent = name;
+  document.getElementById('deleteConfirmBtn').href = url;
+  var modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+  modal.show();
+}
+</script>
+{% endblock %}
+
 {% endblock %}
