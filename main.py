@@ -553,25 +553,14 @@ def admin_penghuni_approve(id):
         # 1. Update status penghuni
         cursor.execute("UPDATE penghuni SET status = 'ACTIVE', verified_at = CURRENT_TIMESTAMP WHERE id = %s", (id,))
         
-        # 2. Cek apakah kolom payment_cycle ada di kontrak_sewa
-        cursor.execute("""
-            SELECT column_name FROM information_schema.columns 
-            WHERE table_name='kontrak_sewa' AND column_name='payment_cycle'
-        """)
-        has_payment_cycle = cursor.fetchone() is not None
-        
-        if has_payment_cycle:
-            cursor.execute('''
-                INSERT INTO kontrak_sewa (tenant_id, room_id, start_date, monthly_rate, due_day, payment_cycle, status)
-                VALUES (%s, %s, %s, %s, %s, %s, 'ACTIVE') RETURNING id
-            ''', (id, room_id, start_date, room['monthly_rate'], due_day, payment_cycle))
-        else:
-            cursor.execute('''
-                INSERT INTO kontrak_sewa (tenant_id, room_id, start_date, monthly_rate, due_day, status)
-                VALUES (%s, %s, %s, %s, %s, 'ACTIVE') RETURNING id
-            ''', (id, room_id, start_date, room['monthly_rate'], due_day))
+        # 2. Buat kontrak sewa (tanpa payment_cycle - kolom belum ada di DB)
+        cursor.execute('''
+            INSERT INTO kontrak_sewa (tenant_id, room_id, start_date, monthly_rate, due_day, status)
+            VALUES (%s, %s, %s, %s, %s, 'ACTIVE') RETURNING id
+        ''', (id, room_id, start_date, room['monthly_rate'], due_day))
         
         contract_id = cursor.fetchone()['id']
+
         
         # 2b. Buat tagihan pertama
         from datetime import datetime
