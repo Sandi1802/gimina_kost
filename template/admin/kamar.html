@@ -44,6 +44,8 @@
                 <span class="badge badge-status active">Tersedia</span>
               {% elif k.status == 'OCCUPIED' %}
                 <span class="badge badge-status belum">Terisi</span>
+              {% elif k.status == 'RESERVED' %}
+                <span class="badge badge-status bg-info text-white border-0">Dipesan</span>
               {% else %}
                 <span class="badge badge-status draft">Maintenance</span>
               {% endif %}
@@ -74,7 +76,7 @@
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Harga Bulanan (Rp)</label>
-                    <input type="number" name="monthly_rate" class="form-control" required min="100000" step="10000" value="{{ k.monthly_rate }}">
+                    <input type="number" name="monthly_rate" class="form-control" required min="10000" step="1" value="{{ k.monthly_rate | int }}">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Status Kamar</label>
@@ -116,7 +118,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Harga Bulanan (Rp)</label>
-          <input type="number" name="monthly_rate" class="form-control" required min="100000" step="10000" placeholder="Cth: 1500000">
+          <input type="number" name="monthly_rate" class="form-control" required min="10000" step="1" placeholder="Cth: 1500000">
         </div>
       </div>
       <div class="modal-footer">
