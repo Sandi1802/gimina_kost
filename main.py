@@ -627,6 +627,31 @@ def admin_penghuni_checkout(id):
         conn.close()
     return redirect(url_for('admin_penghuni'))
 
+@app.route('/admin/penghuni/edit/<int:id>', methods=['POST'])
+@login_required
+def admin_penghuni_edit(id):
+    full_name = request.form.get('full_name')
+    nik = request.form.get('nik')
+    phone = request.form.get('phone')
+    occupation = request.form.get('occupation')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            UPDATE penghuni 
+            SET full_name = %s, nik = %s, phone = %s, occupation = %s 
+            WHERE id = %s
+        ''', (full_name, nik, phone, occupation, id))
+        conn.commit()
+        flash('Data penghuni berhasil diupdate.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Gagal mengupdate data penghuni: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('admin_penghuni'))
 # --- KAMAR ROUTES ---
 @app.route('/admin/kamar/jatinangor')
 @login_required
@@ -683,6 +708,26 @@ def admin_kamar_add():
         return redirect(url_for('admin_kamar_jatinangor'))
     else:
         return redirect(url_for('admin_kamar_gunungbatu'))
+
+@app.route('/admin/kamar/edit/<int:id>', methods=['POST'])
+@login_required
+def admin_kamar_edit(id):
+    room_number = request.form.get('room_number')
+    monthly_rate = request.form.get('monthly_rate')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE kamar SET room_number = %s, monthly_rate = %s WHERE id = %s",
+                       (room_number, monthly_rate, id))
+        conn.commit()
+        flash('Kamar berhasil diupdate.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Gagal mengupdate kamar: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(request.referrer or url_for('admin_dashboard'))
 
 @app.route('/admin/kamar/delete/<int:id>')
 @login_required
@@ -750,6 +795,31 @@ def admin_inventaris_add():
     except Exception as e:
         conn.rollback()
         flash(f'Gagal menambahkan barang: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('admin_inventaris'))
+
+@app.route('/admin/inventaris/edit/<int:id>', methods=['POST'])
+@login_required
+def admin_inventaris_edit(id):
+    nama_barang = request.form.get('nama_barang')
+    jumlah = request.form.get('jumlah')
+    kondisi = request.form.get('kondisi')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            UPDATE inventaris 
+            SET nama_barang = %s, jumlah = %s, kondisi = %s 
+            WHERE id = %s
+        ''', (nama_barang, jumlah, kondisi, id))
+        conn.commit()
+        flash('Inventaris berhasil diupdate.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Gagal mengupdate inventaris: {e}', 'danger')
     finally:
         cursor.close()
         conn.close()

@@ -49,11 +49,40 @@
               {% endif %}
             </td>
             <td>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editKamarModal{{ k.id }}">
+                <i class="fas fa-edit"></i> Edit
+              </button>
               <a href="{{ url_for('admin_kamar_delete', id=k.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus kamar ini?');">
                 <i class="fas fa-trash"></i> Hapus
               </a>
             </td>
           </tr>
+
+          <!-- Modal Edit Kamar -->
+          <div class="modal fade" id="editKamarModal{{ k.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+              <form class="modal-content" action="{{ url_for('admin_kamar_edit', id=k.id) }}" method="POST">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Kamar ({{ nama_lokasi }})</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label class="form-label">Nomor Kamar</label>
+                    <input type="text" name="room_number" class="form-control" required value="{{ k.room_number }}">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Harga Bulanan (Rp)</label>
+                    <input type="number" name="monthly_rate" class="form-control" required min="100000" step="10000" value="{{ k.monthly_rate }}">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
           {% endfor %}
         </tbody>
       </table>

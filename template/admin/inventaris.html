@@ -50,11 +50,48 @@
                   {% endif %}
                 </td>
                 <td>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editInvModal{{ item.id }}">
+                    <i class="fas fa-edit"></i>
+                  </button>
                   <a href="{{ url_for('admin_inventaris_delete', id=item.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?');">
                     <i class="fas fa-trash"></i>
                   </a>
                 </td>
               </tr>
+              
+              <!-- Modal Edit Inventaris -->
+              <div class="modal fade" id="editInvModal{{ item.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form class="modal-content" action="{{ url_for('admin_inventaris_edit', id=item.id) }}" method="POST">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit Barang</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Nama Barang</label>
+                        <input type="text" name="nama_barang" class="form-control" required value="{{ item.nama_barang }}">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Jumlah</label>
+                        <input type="number" name="jumlah" class="form-control" required min="1" value="{{ item.jumlah }}">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Kondisi</label>
+                        <select name="kondisi" class="form-select">
+                          <option value="Baik" {% if item.kondisi == 'Baik' %}selected{% endif %}>Baik</option>
+                          <option value="Perbaikan" {% if item.kondisi == 'Perbaikan' %}selected{% endif %}>Butuh Perbaikan</option>
+                          <option value="Rusak" {% if item.kondisi == 'Rusak' %}selected{% endif %}>Rusak</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
               {% endfor %}
             </tbody>
           </table>
@@ -98,11 +135,49 @@
                   {% endif %}
                 </td>
                 <td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editInvGBModal{{ item.id }}">
+                    <i class="fas fa-edit"></i>
+                  </button>
                   <a href="{{ url_for('admin_inventaris_delete', id=item.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus barang ini?');">
                     <i class="fas fa-trash"></i>
                   </a>
                 </td>
               </tr>
+
+              <!-- Modal Edit Inventaris Gunung Batu -->
+              <div class="modal fade" id="editInvGBModal{{ item.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form class="modal-content" action="{{ url_for('admin_inventaris_edit', id=item.id) }}" method="POST">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit Barang</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Nama Barang</label>
+                        <input type="text" name="nama_barang" class="form-control" required value="{{ item.nama_barang }}">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Jumlah</label>
+                        <input type="number" name="jumlah" class="form-control" required min="1" value="{{ item.jumlah }}">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Kondisi</label>
+                        <select name="kondisi" class="form-select">
+                          <option value="Baik" {% if item.kondisi == 'Baik' %}selected{% endif %}>Baik</option>
+                          <option value="Perbaikan" {% if item.kondisi == 'Perbaikan' %}selected{% endif %}>Butuh Perbaikan</option>
+                          <option value="Rusak" {% if item.kondisi == 'Rusak' %}selected{% endif %}>Rusak</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
               {% endfor %}
             </tbody>
           </table>

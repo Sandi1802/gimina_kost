@@ -35,7 +35,7 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td><strong>{{ p.full_name }}</strong></td>
-            <td>{{ p.nik }}</td>
+            <td>{{ p.nik or '-' }}</td>
             <td>
               {% if p.ktp_url %}
                 <a href="{{ url_for('static', filename='uploads/' + p.ktp_url) }}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-id-card"></i> KTP</a>
@@ -43,8 +43,8 @@
                 <span class="text-muted small">-</span>
               {% endif %}
             </td>
-            <td>{{ p.phone }}</td>
-            <td>{{ p.occupation }}</td>
+            <td>{{ p.phone or '-' }}</td>
+            <td>{{ p.occupation or '-' }}</td>
             <td>
               {% if p.status == 'ACTIVE' %}
                 <span class="badge badge-status active">Aktif</span>
@@ -55,17 +55,16 @@
               {% endif %}
             </td>
             <td>
-              {% if p.status == 'PENDING' %}
-                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal{{ p.id }}"><i class="fas fa-check"></i> Setujui</button>
-              {% elif p.status == 'ACTIVE' %}
-                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}"><i class="fas fa-sign-out-alt"></i> Checkout</button>
-              {% else %}
-                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i> Edit</button>
-              {% endif %}
+              <div class="d-flex gap-1">
+                {% if p.status == 'PENDING' %}
+                  <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal{{ p.id }}"><i class="fas fa-check"></i></button>
+                {% elif p.status == 'ACTIVE' %}
+                  <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}" title="Checkout"><i class="fas fa-sign-out-alt"></i></button>
+                {% endif %}
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPenghuniModal{{ p.id }}" title="Edit Data"><i class="fas fa-edit"></i></button>
+              </div>
             </td>
-          </tr>
-
-          {% endfor %}
+          </tr>          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -141,5 +140,40 @@
     </form>
   </div>
 </div>
+
+<!-- Modal Edit Penghuni -->
+<div class="modal fade" id="editPenghuniModal{{ p.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_penghuni_edit', id=p.id) }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Penghuni: {{ p.full_name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Nama Lengkap</label>
+          <input type="text" name="full_name" class="form-control" required value="{{ p.full_name }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">NIK</label>
+          <input type="text" name="nik" class="form-control" value="{{ p.nik or '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nomor HP</label>
+          <input type="text" name="phone" class="form-control" value="{{ p.phone or '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Pekerjaan</label>
+          <input type="text" name="occupation" class="form-control" value="{{ p.occupation or '' }}">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endfor %}
 {% endblock %}
