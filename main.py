@@ -659,6 +659,27 @@ def admin_penghuni_edit(id):
         cursor.close()
         conn.close()
     return redirect(url_for('admin_penghuni'))
+
+@app.route('/admin/penghuni/delete/<int:id>')
+@login_required
+def admin_penghuni_delete(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # Hapus data terkait dulu agar tidak terjadi constraint error
+        cursor.execute("DELETE FROM dokumen_penghuni WHERE tenant_id = %s", (id,))
+        cursor.execute("DELETE FROM kontrak_sewa WHERE tenant_id = %s", (id,))
+        cursor.execute("DELETE FROM penghuni WHERE id = %s", (id,))
+        conn.commit()
+        flash('Data penghuni berhasil dihapus.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Gagal menghapus penghuni: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('admin_penghuni'))
+
 # --- KAMAR ROUTES ---
 @app.route('/admin/kamar/jatinangor')
 @login_required
