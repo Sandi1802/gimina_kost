@@ -48,10 +48,10 @@
             <td>{{ p.occupation or '-' }}</td>
             <td>
               {% if p.kamar_diajukan %}
-                <span class="badge bg-primary">
-                  <i class="fas fa-door-closed me-1"></i>
-                  {{ p.lokasi_diajukan }} - {{ p.kamar_diajukan }}
+                <span class="badge bg-primary fs-6 fw-normal px-2 py-1">
+                  <i class="fas fa-door-closed me-1"></i>{{ p.kamar_diajukan }}
                 </span>
+                <div class="text-muted small mt-1">{{ p.lokasi_diajukan }}</div>
               {% else %}
                 <span class="text-muted small">Belum mengajukan</span>
               {% endif %}
@@ -66,17 +66,17 @@
               {% endif %}
             </td>
             <td>
-              <div class="d-flex gap-1 flex-wrap">
+              <div class="d-flex gap-1 align-items-center" style="min-width: 100px;">
                 {% if p.status == 'PENDING' %}
                   <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal{{ p.id }}" title="Setujui"><i class="fas fa-check"></i></button>
                 {% elif p.status == 'ACTIVE' %}
-                  <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}" title="Checkout"><i class="fas fa-sign-out-alt"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#checkoutModal{{ p.id }}" title="Checkout"><i class="fas fa-sign-out-alt"></i></button>
                 {% endif %}
-                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPenghuniModal{{ p.id }}" title="Edit Data"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPenghuniModal{{ p.id }}" title="Edit"><i class="fas fa-edit"></i></button>
                 <a href="{{ url_for('admin_penghuni_delete', id=p.id) }}" 
                    class="btn btn-sm btn-outline-danger" 
-                   title="Hapus Penghuni"
-                   onclick="return confirm('Yakin ingin menghapus penghuni {{ p.full_name }}? Semua data kontrak dan dokumen akan ikut terhapus!');">
+                   title="Hapus"
+                   onclick="return confirm('Hapus penghuni {{ p.full_name }}? Semua data terkait akan ikut terhapus!');">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>

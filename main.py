@@ -515,7 +515,12 @@ def admin_penghuni():
             l.nama_lokasi as lokasi_diajukan
         FROM penghuni p
         LEFT JOIN dokumen_penghuni d ON p.id = d.tenant_id AND d.document_type = 'KTP'
-        LEFT JOIN kontrak_sewa ks ON p.id = ks.tenant_id AND ks.status IN ('PENDING', 'ACTIVE')
+        LEFT JOIN (
+            SELECT DISTINCT ON (tenant_id) tenant_id, room_id
+            FROM kontrak_sewa
+            WHERE status IN ('PENDING', 'ACTIVE')
+            ORDER BY tenant_id, id DESC
+        ) ks ON p.id = ks.tenant_id
         LEFT JOIN kamar k ON ks.room_id = k.id
         LEFT JOIN lokasi_kos l ON k.location_id = l.id
         ORDER BY p.id DESC
