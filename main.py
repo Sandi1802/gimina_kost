@@ -671,12 +671,16 @@ def admin_penghuni_delete(id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        # Hapus data terkait dulu agar tidak terjadi constraint error
+        # Hapus data terkait dari bawah (child) ke atas (parent) agar tidak error foreign key
+        cursor.execute("DELETE FROM pembayaran WHERE invoice_id IN (SELECT id FROM tagihan WHERE contract_id IN (SELECT id FROM kontrak_sewa WHERE tenant_id = %s))", (id,))
+        cursor.execute("DELETE FROM tagihan WHERE contract_id IN (SELECT id FROM kontrak_sewa WHERE tenant_id = %s)", (id,))
+        cursor.execute("DELETE FROM keluhan WHERE tenant_id = %s", (id,))
+        cursor.execute("DELETE FROM checkin_checkout WHERE tenant_id = %s", (id,))
         cursor.execute("DELETE FROM dokumen_penghuni WHERE tenant_id = %s", (id,))
         cursor.execute("DELETE FROM kontrak_sewa WHERE tenant_id = %s", (id,))
         cursor.execute("DELETE FROM penghuni WHERE id = %s", (id,))
         conn.commit()
-        flash('Data penghuni berhasil dihapus.', 'success')
+        flash('Data penghuni berhasil dihapus beserta semua data riwayatnya.', 'success')
     except Exception as e:
         conn.rollback()
         flash(f'Gagal menghapus penghuni: {e}', 'danger')
@@ -1032,7 +1036,8 @@ def admin_kontrak_delete(id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        # Hapus tagihan terkait terlebih dahulu agar tidak constraint error
+        # Hapus tagihan dan pembayaran terkait terlebih dahulu agar tidak constraint error
+        cursor.execute("DELETE FROM pembayaran WHERE invoice_id IN (SELECT id FROM tagihan WHERE contract_id = %s)", (id,))
         cursor.execute("DELETE FROM tagihan WHERE contract_id = %s", (id,))
         cursor.execute("DELETE FROM kontrak_sewa WHERE id = %s", (id,))
         conn.commit()
