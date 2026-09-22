@@ -747,11 +747,12 @@ def admin_kamar_add():
 def admin_kamar_edit(id):
     room_number = request.form.get('room_number')
     monthly_rate = request.form.get('monthly_rate')
+    status = request.form.get('status')
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE kamar SET room_number = %s, monthly_rate = %s WHERE id = %s",
-                       (room_number, monthly_rate, id))
+        cursor.execute("UPDATE kamar SET room_number = %s, monthly_rate = %s, status = %s WHERE id = %s",
+                       (room_number, monthly_rate, status, id))
         conn.commit()
         flash('Kamar berhasil diupdate.', 'success')
     except Exception as e:
@@ -1024,6 +1025,25 @@ def admin_kontrak():
     cursor.close()
     conn.close()
     return render_template('admin/kontrak.html', kontrak=kontrak)
+
+@app.route('/admin/kontrak/delete/<int:id>')
+@login_required
+def admin_kontrak_delete(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # Hapus tagihan terkait terlebih dahulu agar tidak constraint error
+        cursor.execute("DELETE FROM tagihan WHERE contract_id = %s", (id,))
+        cursor.execute("DELETE FROM kontrak_sewa WHERE id = %s", (id,))
+        conn.commit()
+        flash('Data kontrak berhasil dihapus.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Gagal menghapus kontrak: {e}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
+    return redirect(url_for('admin_kontrak'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
