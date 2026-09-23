@@ -725,7 +725,11 @@ def admin_kamar_gunungbatu():
 def admin_kamar_add():
     location_id = request.form.get('location_id')
     room_number = request.form.get('room_number')
-    monthly_rate = request.form.get('monthly_rate')
+    monthly_rate_raw = request.form.get('monthly_rate', '0')
+    
+    import re
+    monthly_rate_clean = re.sub(r'[^\d]', '', monthly_rate_raw)
+    monthly_rate = int(monthly_rate_clean) if monthly_rate_clean else 0
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -750,8 +754,14 @@ def admin_kamar_add():
 @login_required
 def admin_kamar_edit(id):
     room_number = request.form.get('room_number')
-    monthly_rate = request.form.get('monthly_rate')
+    monthly_rate_raw = request.form.get('monthly_rate', '0')
     status = request.form.get('status')
+    
+    # Bersihkan string dari titik atau koma jika user mengetik format uang
+    import re
+    monthly_rate_clean = re.sub(r'[^\d]', '', monthly_rate_raw)
+    monthly_rate = int(monthly_rate_clean) if monthly_rate_clean else 0
+
     conn = get_db_connection()
     cursor = conn.cursor()
     try:

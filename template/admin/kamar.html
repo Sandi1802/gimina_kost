@@ -61,46 +61,49 @@
             </td>
           </tr>
 
-          <!-- Modal Edit Kamar -->
-          <div class="modal fade" id="editKamarModal{{ k.id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-              <form class="modal-content" action="{{ url_for('admin_kamar_edit', id=k.id) }}" method="POST">
-                <div class="modal-header">
-                  <h5 class="modal-title">Edit Kamar ({{ nama_lokasi }})</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="mb-3">
-                    <label class="form-label">Nomor Kamar</label>
-                    <input type="text" name="room_number" class="form-control" required value="{{ k.room_number }}">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Harga Bulanan (Rp)</label>
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" name="monthly_rate" class="form-control" required value="{{ k.monthly_rate | int }}">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Status Kamar</label>
-                    <select name="status" class="form-select">
-                      <option value="AVAILABLE" {% if k.status == 'AVAILABLE' %}selected{% endif %}>Tersedia</option>
-                      <option value="OCCUPIED" {% if k.status == 'OCCUPIED' %}selected{% endif %}>Terisi</option>
-                      <option value="RESERVED" {% if k.status == 'RESERVED' %}selected{% endif %}>Dipesan / Menunggu</option>
-                      <option value="MAINTENANCE" {% if k.status == 'MAINTENANCE' %}selected{% endif %}>Maintenance (Perbaikan)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                  <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-              </form>
-            </div>
-          </div>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
 </div>
+
+{% for k in kamar %}
+<!-- Modal Edit Kamar -->
+<div class="modal fade" id="editKamarModal{{ k.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="{{ url_for('admin_kamar_edit', id=k.id) }}" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Kamar ({{ nama_lokasi }})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Nomor Kamar</label>
+          <input type="text" name="room_number" class="form-control" required value="{{ k.room_number }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Harga Bulanan (Rp)</label>
+          <input type="text" name="monthly_rate" class="form-control" required value="{{ k.monthly_rate | int }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Status Kamar</label>
+          <select name="status" class="form-select">
+            <option value="AVAILABLE" {% if k.status == 'AVAILABLE' %}selected{% endif %}>Tersedia</option>
+            <option value="OCCUPIED" {% if k.status == 'OCCUPIED' %}selected{% endif %}>Terisi</option>
+            <option value="RESERVED" {% if k.status == 'RESERVED' %}selected{% endif %}>Dipesan / Menunggu</option>
+            <option value="MAINTENANCE" {% if k.status == 'MAINTENANCE' %}selected{% endif %}>Maintenance (Perbaikan)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
 
 <!-- Modal Tambah Kamar -->
 <div class="modal fade" id="addKamarModal" tabindex="-1" aria-hidden="true">
@@ -118,7 +121,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Harga Bulanan (Rp)</label>
-          <input type="text" inputmode="numeric" pattern="[0-9]*" name="monthly_rate" class="form-control" required placeholder="Cth: 1500000">
+          <input type="text" name="monthly_rate" class="form-control" required placeholder="Cth: 1500000">
         </div>
       </div>
       <div class="modal-footer">
