@@ -76,7 +76,7 @@
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Harga Bulanan (Rp)</label>
-                    <input type="number" name="monthly_rate" class="form-control" required min="10000" step="1" value="{{ k.monthly_rate | int }}">
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" name="monthly_rate" class="form-control" required value="{{ k.monthly_rate | int }}">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Status Kamar</label>
@@ -118,7 +118,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Harga Bulanan (Rp)</label>
-          <input type="number" name="monthly_rate" class="form-control" required min="10000" step="1" placeholder="Cth: 1500000">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" name="monthly_rate" class="form-control" required placeholder="Cth: 1500000">
         </div>
       </div>
       <div class="modal-footer">
