@@ -9,9 +9,9 @@
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
   
   <!-- SEO & OpenGraph Meta Tags (Bagus saat link dibagikan di IG/WhatsApp) -->
-  <meta name="description" content="Gimina Kost - Hunian kost eksklusif, nyaman, dan strategis di Jatinangor dan Bandung. Hubungi kami via WhatsApp, cek ketersediaan kamar, dan lihat fasilitas lengkap.">
+  <meta name="description" content="Gimina Kost - Hunian kost eksklusif, nyaman, dan strategis di Jatinangor dan Bandung. Hubungi kami via WhatsApp, petunjuk arah lokasi Google Maps, dan media sosial resmi.">
   <meta property="og:title" content="Gimina Kost | Informasi & Kontak Resmi">
-  <meta property="og:description" content="Hunian kost eksklusif & nyaman di Jatinangor dan Bandung. Chat WhatsApp, cek detail kamar, dan reservasi online.">
+  <meta property="og:description" content="Hunian kost eksklusif & nyaman di Jatinangor dan Bandung. Chat WhatsApp, petunjuk arah Google Maps, dan medsos resmi.">
   <meta property="og:image" content="{{ url_for('static', filename='img/jatinangor.jpg', _external=True) }}">
   <meta property="og:url" content="https://giminakost.com/info">
   <meta property="og:type" content="website">
@@ -24,6 +24,7 @@
         extend: {
           colors: {
             gold: {
+              300: '#e5c762',
               400: '#dcae32',
               500: '#b08d35',
               600: '#947225',
@@ -63,7 +64,7 @@
       width: 100%;
       height: 100%;
       background: url("{{ url_for('static', filename='img/jatinangor.jpg') }}") center center / cover no-repeat;
-      filter: brightness(0.4) saturate(1.15) blur(3px);
+      filter: brightness(0.38) saturate(1.15) blur(3px);
       transform: scale(1.05); /* Avoid blur white edges */
       z-index: -2;
     }
@@ -74,7 +75,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top center, rgba(176, 141, 53, 0.22) 0%, rgba(18, 16, 13, 0.75) 50%, rgba(10, 8, 6, 0.95) 100%);
+      background: radial-gradient(circle at top center, rgba(176, 141, 53, 0.22) 0%, rgba(18, 16, 13, 0.78) 50%, rgba(10, 8, 6, 0.95) 100%);
       z-index: -1;
     }
 
@@ -104,7 +105,7 @@
     }
 
     .avatar-glow {
-      box-shadow: 0 0 30px rgba(176, 141, 53, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(176, 141, 53, 0.45), 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
     /* Modal Animation */
@@ -129,7 +130,7 @@
       
       <!-- Circle Logo Avatar -->
       <div class="relative w-28 h-28 mx-auto -mt-2 mb-4">
-        <div class="w-28 h-28 rounded-full bg-white p-3 flex items-center justify-center avatar-glow border-2 border-[#b08d35]/40 transition-transform duration-300 hover:scale-105">
+        <div class="w-28 h-28 rounded-full bg-white p-3 flex items-center justify-center avatar-glow border-2 border-[#b08d35]/50 transition-transform duration-300 hover:scale-105">
           <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Gimina Kost" class="max-h-full max-w-full object-contain">
         </div>
         <!-- Online Indicator Badge -->
@@ -145,38 +146,26 @@
         Hunian Eksklusif & Nyaman
       </p>
 
-      <!-- Description / Bio -->
-      <p class="text-xs sm:text-sm text-gray-200 mt-3 leading-relaxed font-light">
-        Hunian kost modern & strategis di kawasan <strong>Jatinangor</strong> dan <strong>Bandung</strong>. Berkomitmen memberikan kenyamanan, keamanan, dan fasilitas terbaik dengan harga terjangkau.
-      </p>
-
-      <!-- Quick Room Availability Highlights -->
-      {% if lokasi_list %}
-      <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-white/15 text-left">
-        {% for l in lokasi_list %}
-        <div class="bg-black/25 rounded-xl p-2.5 border border-white/10">
-          <div class="text-[11px] text-gray-300 truncate font-medium">
-            <i class="fas fa-location-dot text-gold-400 me-1"></i>{{ l.nama_lokasi.replace('Gimina Kost ', '') }}
-          </div>
-          <div class="text-xs font-bold text-emerald-400 mt-0.5">
-            {{ l.kamar_tersedia }} Kamar Kosong
-          </div>
-        </div>
-        {% endfor %}
+      <!-- Description / Bio (Teks Dirapihkan & Lebih Estetik) -->
+      <div class="mt-4 pt-3 border-t border-white/15">
+        <p class="text-xs sm:text-sm text-gray-200 leading-relaxed font-light text-center px-1">
+          Hunian kost modern & strategis di kawasan <strong>Jatinangor</strong> dan <strong>Bandung</strong>.<br class="hidden sm:inline">
+          Berkomitmen memberikan kenyamanan, keamanan, dan fasilitas terbaik dengan harga terjangkau.
+        </p>
       </div>
-      {% endif %}
+
     </div>
 
     <!-- 2. Operational Hours Card (Persis contoh gambar) -->
     <div class="w-full glass-card rounded-2xl p-4 text-center mb-4 border border-white/20">
       <div class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gold-400 mb-0.5">
-        <i class="far fa-clock me-1"></i> Jam Operasional & Layanan
+        <i class="far fa-clock me-1"></i> Jam Operasional:
       </div>
       <div class="text-sm sm:text-base font-extrabold text-white tracking-wide">
         SETIAP HARI 08.00 - 21.00 WIB
       </div>
       <div class="text-[11px] sm:text-xs text-gray-300 mt-1 font-light italic">
-        (Tersedia Janjian Survei Kamar & Reservasi Online)
+        (LEBIH BAIK RESERVASI DAHULU)
       </div>
     </div>
 
@@ -196,7 +185,7 @@
               CHAT & RESERVASI JATINANGOR
             </div>
             <div class="text-[11px] sm:text-xs text-gray-300 flex items-center gap-1.5 mt-0.5">
-              <span>Chat WhatsApp Sekarang</span>
+              <span>Chat Sekarang</span>
               <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             </div>
           </div>
@@ -219,7 +208,7 @@
               CHAT & RESERVASI GUNUNG BATU
             </div>
             <div class="text-[11px] sm:text-xs text-gray-300 flex items-center gap-1.5 mt-0.5">
-              <span>Chat WhatsApp Sekarang</span>
+              <span>Chat Sekarang</span>
               <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             </div>
           </div>
@@ -229,92 +218,53 @@
         </div>
       </a>
 
-      <!-- BUTTON 3: Detail Kamar & Fasilitas Jatinangor -->
-      <a href="{{ url_for('detail_kos', lokasi_id=1) }}" 
+      <!-- BUTTON 3: Google Maps Jatinangor (Langsung mengarah ke link Maps Jatinangor) -->
+      <a href="https://www.google.com/maps?sca_esv=03ade9624da30b0a&sxsrf=AKL5yDh2XzMSgYSZ6oezMbg56EGmVgzBFg:1794802667281&biw=2304&bih=1094&uact=5&gs_lp=Egxnd3Mtd2l6LXNlcnAiFkdpbWluYSBrb3N0IGphdGluYW5nb3IyBxAAGIAEGAoyAhAmMgUQABjvBTIFEAAY7wUyBRAAGO8FMgUQABjvBTIFEAAY7wVIoTNQAFjEMXAAeAGQAQCYAeUCoAHLEqoBCDE2LjQuMS4xsAEAuAEDyAEA-AEBmAIWoALwFMICCBAAGIAEGLEDwgILEAAYgAQYsQMYgwHCAhEQLhiABBixAxiDARjHARjRA8ICCxAuGIAEGLEDGIMBwgIHEAAYAxiNBsICBRAAGIAEwgIOEAAYgAQYigUYsQMYgwHCAgUQLhiABMICGhAuGIAEGLEDGIMBGJcFGNwEGN4EGN8E2AEBwgIPEAAYgAQYChgLGLEDGIMBwgIIEAAYgAQYtAfCAgwQABiABBgKGAsYsQPCAgoQABiABBiKBRhDwgINEAAYgAQYigUYQxixA8ICDhAuGIAEGMcBGK8BGI4FwgILEC4YgAQYxwEYrwHCAgkQABiABBgKGAvCAhIQLhiABBgKGAsYxwEYrwEYjgXCAgwQABiABBgKGAsYxwPCAhAQLhiABBjHARivARiOBRgKwgIEEAAYHsICBhAAGB4YCsICCBAAGIAEGKIEmAMA4gMEGAAgXeIDBBgAIF7iAwQYACBf4gMEGAAgYOIDBBgAIGHiAwQYACBiugYGCAEQARgUkgcIMTUuNC4yLjGgB_uYAbIHCDE1LjQuMi4xuAfwFMIHCDItMTMuNy4yyAfLAYAIAQ&um=1&ie=UTF-8&fb=1&gl=id&sa=X&geocode=KaWex2CYxGguMd0ghKdSzgQe&daddr=Jl.+Kolonel+Achmad+Syam+No.195,+RT.03/RW.09,+Sayang,+Kec.+Jatinangor,+Kabupaten+Sumedang,+Jawa+Barat+45363" 
+         target="_blank" 
+         rel="noopener noreferrer" 
          class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-11 h-11 rounded-xl bg-amber-500/25 border border-amber-400/40 flex items-center justify-center text-amber-300 group-hover:scale-110 transition-transform">
-            <i class="fas fa-door-open text-xl"></i>
-          </div>
-          <div>
-            <div class="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-gold-400 transition-colors">
-              DETAIL KAMAR JATINANGOR
-            </div>
-            <div class="text-[11px] sm:text-xs text-gray-300 mt-0.5">
-              Foto Kamar, Fasilitas, & Harga
-            </div>
-          </div>
-        </div>
-        <div class="text-gray-400 group-hover:text-white transition-colors pr-1">
-          <i class="fas fa-chevron-right text-xs"></i>
-        </div>
-      </a>
-
-      <!-- BUTTON 4: Detail Kamar & Fasilitas Gunung Batu -->
-      <a href="{{ url_for('detail_kos', lokasi_id=2) }}" 
-         class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-11 h-11 rounded-xl bg-amber-500/25 border border-amber-400/40 flex items-center justify-center text-amber-300 group-hover:scale-110 transition-transform">
-            <i class="fas fa-bed text-xl"></i>
-          </div>
-          <div>
-            <div class="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-gold-400 transition-colors">
-              DETAIL KAMAR GUNUNG BATU
-            </div>
-            <div class="text-[11px] sm:text-xs text-gray-300 mt-0.5">
-              Foto Kamar, Fasilitas, & Harga
-            </div>
-          </div>
-        </div>
-        <div class="text-gray-400 group-hover:text-white transition-colors pr-1">
-          <i class="fas fa-chevron-right text-xs"></i>
-        </div>
-      </a>
-
-      <!-- BUTTON 5: Pendaftaran / Booking Online -->
-      <a href="{{ url_for('pendaftaran') }}" 
-         class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-11 h-11 rounded-xl bg-[#b08d35]/30 border border-[#b08d35]/50 flex items-center justify-center text-gold-400 group-hover:scale-110 transition-transform">
-            <i class="fas fa-file-signature text-xl"></i>
-          </div>
-          <div>
-            <div class="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-gold-400 transition-colors">
-              PENDAFTARAN PENGHUNI BARU
-            </div>
-            <div class="text-[11px] sm:text-xs text-gray-300 mt-0.5">
-              Booking Kamar & Daftar Akun Online
-            </div>
-          </div>
-        </div>
-        <div class="text-gray-400 group-hover:text-white transition-colors pr-1">
-          <i class="fas fa-chevron-right text-xs"></i>
-        </div>
-      </a>
-
-      <!-- BUTTON 6: Lokasi Google Maps (Trigger Modal) -->
-      <button type="button" 
-              onclick="openMapsModal()" 
-              class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
         <div class="flex items-center space-x-3.5">
           <div class="w-11 h-11 rounded-xl bg-red-500/25 border border-red-400/40 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
             <i class="fas fa-map-location-dot text-xl"></i>
           </div>
           <div>
             <div class="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-gold-400 transition-colors">
-              LOKASI & PETUNJUK ARAH (MAPS)
+              LOKASI MAPS - GIMINA JATINANGOR
             </div>
             <div class="text-[11px] sm:text-xs text-gray-300 mt-0.5">
-              Pilih Cabang Jatinangor / Gunung Batu
+              Petunjuk Arah Google Maps
             </div>
           </div>
         </div>
         <div class="text-gray-400 group-hover:text-white transition-colors pr-1">
-          <i class="fas fa-location-arrow text-xs"></i>
+          <i class="fas fa-arrow-up-right-from-square text-xs"></i>
         </div>
-      </button>
+      </a>
 
-      <!-- BUTTON 7: Instagram Resmi -->
+      <!-- BUTTON 4: Google Maps Gunung Batu Bandung (Langsung mengarah ke link Maps Gunung Batu) -->
+      <a href="https://www.google.com/maps?sca_esv=03ade9624da30b0a&udm&fvr=1&pvq=Cg0vZy8xMXEzXzVwMjh5IhEKC0dpbWluYSBrb3N0EAIYAw&lqi=CgtHaW1pbmEga29zdEidkuryj7aAgAhaFRAAEAEYABgBIgtnaW1pbmEga29zdJIBEXN0dWRlbnRfZG9ybWl0b3J5mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ4b05VOUVUa2RPUms1YVYwaGtjMUpzWkRabGEwWnhWbmt3TkZsdVl4QUL6AQQIABBF&vet=10CAAQoqAOahcKEwjI7NC70YuYAxUAAAAAHQAAAAAQEA..i&cs=1&um=1&ie=UTF-8&fb=1&gl=id&sa=X&geocode=KeUnxkdg5WguMVdfyvYFGzy3&daddr=4H67%2BG9J,+Sukaraja,+Kec.+Cicendo,+Kota+Bandung,+Jawa+Barat+40175" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
+        <div class="flex items-center space-x-3.5">
+          <div class="w-11 h-11 rounded-xl bg-red-500/25 border border-red-400/40 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
+            <i class="fas fa-map-location-dot text-xl"></i>
+          </div>
+          <div>
+            <div class="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-gold-400 transition-colors">
+              LOKASI MAPS - GIMINA GUNUNG BATU
+            </div>
+            <div class="text-[11px] sm:text-xs text-gray-300 mt-0.5">
+              Petunjuk Arah Google Maps
+            </div>
+          </div>
+        </div>
+        <div class="text-gray-400 group-hover:text-white transition-colors pr-1">
+          <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+        </div>
+      </a>
+
+      <!-- BUTTON 5: Instagram Resmi -->
       <a href="https://instagram.com/giminakost" 
          target="_blank" 
          class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
@@ -336,7 +286,7 @@
         </div>
       </a>
 
-      <!-- BUTTON 8: TikTok Resmi -->
+      <!-- BUTTON 6: TikTok Resmi -->
       <a href="https://tiktok.com/@giminakost" 
          target="_blank" 
          class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
@@ -358,7 +308,7 @@
         </div>
       </a>
 
-      <!-- BUTTON 9: Website Resmi -->
+      <!-- BUTTON 7: Website Resmi -->
       <a href="{{ url_for('public_home') }}" 
          class="w-full glass-btn rounded-2xl p-3.5 flex items-center justify-between text-left group">
         <div class="flex items-center space-x-3.5">
@@ -414,44 +364,6 @@
 
   </div>
 
-  <!-- ===== MODAL GOOGLE MAPS ===== -->
-  <div id="mapsModal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="glass-card rounded-3xl max-w-sm w-full p-6 text-center border border-white/20 relative shadow-2xl">
-      <button type="button" onclick="closeMapsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
-        <i class="fas fa-times"></i>
-      </button>
-      
-      <div class="w-14 h-14 rounded-2xl bg-red-500/20 border border-red-400/40 text-red-400 flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-map-location-dot text-2xl"></i>
-      </div>
-      
-      <h3 class="text-lg font-bold text-white font-serif mb-1">Pilih Lokasi Kost</h3>
-      <p class="text-xs text-gray-300 mb-5">Buka petunjuk arah di Google Maps langsung ke lokasi:</p>
-      
-      <div class="space-y-3">
-        <a href="https://www.google.com/maps/search/?api=1&query=Gimina+Kost+Jatinangor+Sumedang" 
-           target="_blank" 
-           class="w-full glass-btn py-3 px-4 rounded-xl flex items-center justify-between text-sm font-semibold text-white group">
-          <div class="flex items-center gap-2.5">
-            <i class="fas fa-building text-gold-400"></i>
-            <span>Cabang Jatinangor</span>
-          </div>
-          <i class="fas fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-white"></i>
-        </a>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=Gimina+Kost+Gunung+Batu+Bandung" 
-           target="_blank" 
-           class="w-full glass-btn py-3 px-4 rounded-xl flex items-center justify-between text-sm font-semibold text-white group">
-          <div class="flex items-center gap-2.5">
-            <i class="fas fa-home text-gold-400"></i>
-            <span>Cabang Gunung Batu</span>
-          </div>
-          <i class="fas fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-white"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <!-- ===== MODAL QR CODE ===== -->
   <div id="qrModal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
     <div class="glass-card rounded-3xl max-w-sm w-full p-6 text-center border border-white/20 relative shadow-2xl">
@@ -488,7 +400,6 @@
           showToast('Tautan berhasil disalin ke clipboard!');
         });
       } else {
-        // Fallback
         const textarea = document.createElement('textarea');
         textarea.value = url;
         document.body.appendChild(textarea);
@@ -509,16 +420,7 @@
       }, 2500);
     }
 
-    function openMapsModal() {
-      document.getElementById('mapsModal').classList.remove('hidden');
-    }
-
-    function closeMapsModal() {
-      document.getElementById('mapsModal').classList.add('hidden');
-    }
-
     function openQrModal() {
-      // Pastikan data QR sesuai URL yang sedang dibuka
       const currentUrl = window.location.href;
       document.getElementById('qrImage').src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(currentUrl);
       document.getElementById('qrModal').classList.remove('hidden');
@@ -531,7 +433,6 @@
     // Close modal on escape key
     window.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
-        closeMapsModal();
         closeQrModal();
       }
     });

@@ -59,26 +59,7 @@ def public_home():
 
 @app.route('/info')
 def public_info():
-    conn = get_db_connection()
-    cursor = conn.cursor(row_factory=dict_row)
-    lokasi_list = []
-    try:
-        cursor.execute("""
-            SELECT l.id, l.nama_lokasi, l.alamat,
-                   COUNT(k.id) as total_kamar,
-                   COUNT(k.id) FILTER (WHERE k.status = 'AVAILABLE') as kamar_tersedia
-            FROM lokasi_kos l
-            LEFT JOIN kamar k ON l.id = k.location_id
-            GROUP BY l.id, l.nama_lokasi, l.alamat
-            ORDER BY l.id ASC
-        """)
-        lokasi_list = cursor.fetchall()
-    except Exception as e:
-        print(f"Error fetching data for info: {e}")
-    finally:
-        cursor.close()
-        conn.close()
-    return render_template('portal/info.html', lokasi_list=lokasi_list)
+    return render_template('portal/info.html')
 
 @app.route('/lokasi/<int:lokasi_id>')
 def detail_kos(lokasi_id):
