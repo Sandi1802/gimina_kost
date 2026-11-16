@@ -88,13 +88,7 @@
                             Keluar
                         </a>
                     {% else %}
-                        <a href="{{ url_for('pendaftaran') }}" class="border-transparent text-white hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 hover:border-white text-sm font-bold uppercase tracking-wider transition-colors duration-200">
-                            Daftar Akun
-                        </a>
-                        <a href="{{ url_for('login_penghuni') }}" class="ml-4 px-5 py-2.5 bg-white text-[#b08d35] text-sm font-bold uppercase tracking-wider rounded-md shadow-sm hover:bg-gray-50 hover:shadow transition-all duration-200 flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                            Masuk Penghuni
-                        </a>
+                        {# Menu Daftar & Masuk Penghuni disembunyikan sementara #}
                     {% endif %}
                 </div>
 
@@ -130,13 +124,7 @@
                         Keluar
                     </a>
                 {% else %}
-                    <a href="{{ url_for('pendaftaran') }}" class="text-white hover:bg-[#9a7b2e] block px-3 py-2 rounded-md text-base font-bold uppercase tracking-wide">
-                        Daftar Akun
-                    </a>
-                    <a href="{{ url_for('login_penghuni') }}" class="bg-white text-[#b08d35] hover:bg-gray-50 flex items-center px-3 py-2 rounded-md text-base font-bold uppercase tracking-wide mt-2 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                        Masuk Penghuni
-                    </a>
+                    {# Menu Daftar & Masuk Penghuni disembunyikan sementara #}
                 {% endif %}
             </div>
         </div>
@@ -192,8 +180,6 @@
                     <ul class="space-y-3 text-sm text-gold-50">
                         <li><a href="{{ url_for('public_home') }}" class="hover:text-white hover:underline transition-colors">Beranda</a></li>
                         <li><a href="{{ url_for('public_info') }}" class="hover:text-white hover:underline transition-colors font-semibold text-white flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Link Info & Medsos</a></li>
-                        <li><a href="{{ url_for('pendaftaran') }}" class="hover:text-white hover:underline transition-colors">Daftar Akun</a></li>
-                        <li><a href="{{ url_for('login_penghuni') }}" class="hover:text-white hover:underline transition-colors">Masuk Penghuni</a></li>
                     </ul>
                 </div>
 

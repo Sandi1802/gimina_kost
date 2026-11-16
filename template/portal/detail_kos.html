@@ -419,11 +419,6 @@
                                        class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-lg transition shadow-sm">
                                         <i class="fab fa-whatsapp"></i> Chat Admin / Booking
                                     </a>
-                                    {% if session.get('penghuni_id') %}
-                                        <a href="{{ url_for('ajukan_sewa', room_id=room.id) }}" class="block w-full text-center px-3 py-1.5 border border-gold-600 text-xs font-bold rounded-lg text-gold-600 hover:bg-gold-50 transition">
-                                            Ajukan via Akun Portal
-                                        </a>
-                                    {% endif %}
                                 {% else %}
                                     <button onclick="openModal('Kamar {{ room.room_number }} - {{ room.room_type or 'Reguler' }}')" class="block w-full text-center px-4 py-2 border border-gray-300 text-xs font-bold rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
                                         Daftar Tunggu
