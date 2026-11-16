@@ -66,11 +66,21 @@ def detail_kos(lokasi_id):
     # Base info based on location ID
     if lokasi_id == 1:
         kos_name = "Gimina Kost Jatinangor"
-        address = "Jatinangor, Sumedang"
-        price = "Rp 1.500.000"
-        facilities = ["Kasur Springbed", "Lemari Pakaian", "Kamar Mandi Dalam", "WiFi Gratis", "Dapur Bersama", "Area Parkir"]
-        description = "Gimina Kost Jatinangor merupakan pilihan tepat bagi mahasiswa maupun pekerja yang mencari hunian nyaman dan strategis di area pendidikan Jatinangor."
-        image_file = "jatinangor.jpg"
+        address = "Jl. Kolonel Achmad Syam No.195, Sayang, Kec. Jatinangor, Kab. Sumedang"
+        price = "Rp 1.700.000 - Rp 2.500.000"
+        facilities = [
+            "Kamar Bersih, Nyaman & Privat",
+            "AC (Air Conditioner)",
+            "WiFi Stabil & Cepat",
+            "Air Bersih 24 Jam",
+            "Keamanan CCTV & Akses Gerbang",
+            "Area Parkir Luas (Mobil & Motor)",
+            "Meja Belajar & Kursi Nyaman",
+            "Lemari Pakaian Luas",
+            "Dekat UNPAD, IPDN, ITB & Fasilitas Umum"
+        ]
+        description = "GIMINA KOST | KOST SIAP HUNI by ASR Group. Temukan hunian nyaman dengan fasilitas lengkap dan lokasi strategis. Gimina Kost hadir untuk mendukung kenyamanan Anda dalam beristirahat, belajar, maupun bekerja di kawasan pendidikan Jatinangor."
+        image_file = "gedung_jatinangor.jpg"
     elif lokasi_id == 2:
         kos_name = "Gimina Kost Gunung Batu"
         address = "Gunung Batu, Bandung"

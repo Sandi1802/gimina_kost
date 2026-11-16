@@ -50,10 +50,13 @@
             <div class="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-6 sm:p-8 border border-amber-200 shadow-sm">
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <!-- Foto Preview Kamar -->
-                    <div class="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-md h-72 bg-gray-100 relative group">
-                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80" alt="Preview Kamar Gimina Kost Gunung Batu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-md h-72 bg-gray-100 relative group cursor-pointer" onclick="openImageLightbox('{{ url_for('static', filename='img/gunungbatu.jpg') }}', 'Preview Kamar & Bangunan Gimina Kost Gunung Batu')">
+                        <img src="{{ url_for('static', filename='img/gunungbatu.jpg') }}" alt="Preview Kamar Gimina Kost Gunung Batu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow">
                             <i class="fas fa-couch mr-1"></i> Penataan Furniture
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-semibold text-sm">
+                            <i class="fas fa-search-plus mr-2"></i> Klik Perbesar
                         </div>
                     </div>
                     
@@ -92,67 +95,350 @@
                 </div>
             </div>
             {% else %}
-            <!-- Cabang Jatinangor (Normal Selection) -->
-            {% if not session.get('penghuni_id') %}
-            <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex items-start">
-                <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div>
-                    <p class="text-sm font-medium">Anda belum masuk ke akun.</p>
-                    <p class="text-sm mt-1">Silakan <a href="{{ url_for('pendaftaran') }}" class="font-bold underline hover:text-blue-600">Daftar Akun</a> atau <a href="{{ url_for('login_penghuni') }}" class="font-bold underline hover:text-blue-600">Masuk</a> terlebih dahulu untuk bisa mengajukan sewa kamar secara spesifik.</p>
-                </div>
-            </div>
-            {% endif %}
+            <!-- Cabang Jatinangor: Brosur Resmi, Daftar Harga & Galeri Foto Lengkap -->
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for room in rooms %}
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-                    <div class="h-40 bg-gray-200 relative">
-                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&q=80" class="w-full h-full object-cover">
-                        <div class="absolute top-2 right-2 px-2.5 py-1 rounded text-xs font-bold uppercase
-                            {% if room.status == 'AVAILABLE' %} bg-green-500 text-white
-                            {% elif room.status == 'OCCUPIED' %} bg-red-500 text-white
-                            {% else %} bg-gray-500 text-white {% endif %}
-                        ">
-                            {% if room.status == 'AVAILABLE' %}Tersedia
-                            {% elif room.status == 'OCCUPIED' %}Terisi
-                            {% else %}{{ room.status }}{% endif %}
-                        </div>
+            <!-- 1. KARTU TIPE KAMAR & DAFTAR HARGA RESMI -->
+            <div class="mb-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 font-serif">Daftar Harga & Tipe Kamar (Brosur Resmi)</h3>
+                        <p class="text-xs sm:text-sm text-gray-500">Pilih tipe kamar sesuai kebutuhan Anda. Hubungi kami untuk cek ketersediaan.</p>
                     </div>
-                    <div class="p-5 flex-1 flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-900 font-serif">Kamar {{ room.room_number }}</h3>
-                                <p class="text-xs text-gray-500 mt-1">{{ room.room_type }}</p>
+                    <span class="hidden sm:inline-block text-xs font-semibold bg-gold-100 text-gold-800 px-3 py-1 rounded-full border border-gold-300">
+                        Kost Siap Huni
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- TIPE B - REGULER -->
+                    <div class="bg-white border-2 border-gray-200 hover:border-gold-500 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        <div class="relative h-56 bg-gray-100 overflow-hidden cursor-pointer" onclick="openImageLightbox('{{ url_for('static', filename='img/brosur_reguler.jpg') }}', 'Brosur Resmi - Kamar B (Reguler) Rp 1.700.000/bln')">
+                            <img src="{{ url_for('static', filename='img/brosur_reguler.jpg') }}" alt="Brosur Kamar Reguler" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute top-3 left-3 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+                                B1 – B18 (Reguler)
+                            </div>
+                            <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <i class="fas fa-search-plus"></i> Lihat Brosur
                             </div>
                         </div>
-                        
-                        <p class="text-gold-600 font-bold text-lg my-3">Rp {{ "{:,.0f}".format(room.monthly_rate).replace(',', '.') }} <span class="text-xs text-gray-500 font-normal">/ bln</span></p>
-                        
-                        <div class="text-xs text-gray-600 flex-1 mb-4">
-                            <span class="font-semibold block mb-1">Fasilitas Kamar:</span>
-                            {{ room.facilities }}
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-2">
+                                    <h4 class="text-lg font-bold text-gray-900 font-serif">Kamar B – Reguler</h4>
+                                    <span class="text-xs text-gray-500">18 Unit</span>
+                                </div>
+                                <div class="text-2xl font-black text-gold-600 mb-3">
+                                    Rp 1.700.000 <span class="text-xs font-normal text-gray-500">/ bulan</span>
+                                </div>
+                                <ul class="text-xs text-gray-600 space-y-2 mb-5">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Kamar bersih, nyaman, dan privat</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>AC (Air Conditioner)</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>WiFi stabil & kencang</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Meja belajar sudut & kursi</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Lemari pakaian & Kamar mandi dalam</span></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <a href="https://wa.me/6281776555520?text=Halo%20Admin%20Gimina%20Kost,%20saya%20tertarik%20dengan%20*Kamar%20B%20-%20Reguler%20(B1-B18)%20Rp1.700.000/bln*%20di%20Gimina%20Kost%20Jatinangor.%20Apakah%20masih%20tersedia?" 
+                                   target="_blank" 
+                                   class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-xl transition shadow">
+                                    <i class="fab fa-whatsapp text-base"></i>
+                                    <span>Tanya / Pesan Kamar B</span>
+                                </a>
+                            </div>
                         </div>
-                        
-                        <div class="mt-auto">
-                            {% if room.status == 'AVAILABLE' %}
-                                {% if session.get('penghuni_id') %}
-                                    <a href="{{ url_for('ajukan_sewa', room_id=room.id) }}" class="block w-full text-center px-4 py-2 border border-transparent text-sm font-bold rounded-md text-white bg-gold-600 hover:bg-gold-700 transition">
-                                        Ajukan Sewa
-                                    </a>
-                                {% else %}
-                                    <a href="{{ url_for('pendaftaran') }}" class="block w-full text-center px-4 py-2 border border-gold-600 text-sm font-bold rounded-md text-gold-600 bg-white hover:bg-gold-50 transition">
-                                        Daftar Akun Dulu
-                                    </a>
-                                {% endif %}
-                            {% else %}
-                                <button onclick="openModal('Kamar {{ room.room_number }} - {{ room.room_type }}')" class="block w-full text-center px-4 py-2 border border-gray-300 text-sm font-bold rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
-                                    Daftar Tunggu
-                                </button>
-                            {% endif %}
+                    </div>
+
+                    <!-- TIPE A - VIP -->
+                    <div class="bg-white border-2 border-gold-400 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group relative">
+                        <div class="absolute top-0 right-0 bg-gold-500 text-white text-[10px] font-black uppercase px-3 py-1 rounded-bl-xl tracking-wider z-10 shadow">
+                            VIP
+                        </div>
+                        <div class="relative h-56 bg-gray-100 overflow-hidden cursor-pointer" onclick="openImageLightbox('{{ url_for('static', filename='img/brosur_vip.jpg') }}', 'Brosur Resmi - Kamar A (VIP) Rp 2.200.000/bln')">
+                            <img src="{{ url_for('static', filename='img/brosur_vip.jpg') }}" alt="Brosur Kamar VIP" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute top-3 left-3 bg-amber-600 text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+                                A2 & A3 (VIP)
+                            </div>
+                            <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <i class="fas fa-search-plus"></i> Lihat Brosur
+                            </div>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-2">
+                                    <h4 class="text-lg font-bold text-gray-900 font-serif">Kamar A – VIP</h4>
+                                    <span class="text-xs text-amber-700 font-semibold">2 Unit</span>
+                                </div>
+                                <div class="text-2xl font-black text-gold-600 mb-3">
+                                    Rp 2.200.000 <span class="text-xs font-normal text-gray-500">/ bulan</span>
+                                </div>
+                                <ul class="text-xs text-gray-600 space-y-2 mb-5">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Kamar lebih lega, privat & nyaman</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>AC (Air Conditioner) dingin</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>WiFi stabil & kencang</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Meja kerja, kursi & lemari luas</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Kamar mandi dalam & air 24 jam</span></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <a href="https://wa.me/6281776555520?text=Halo%20Admin%20Gimina%20Kost,%20saya%20tertarik%20dengan%20*Kamar%20A%20-%20VIP%20(A2/A3)%20Rp2.200.000/bln*%20di%20Gimina%20Kost%20Jatinangor.%20Apakah%20masih%20tersedia?" 
+                                   target="_blank" 
+                                   class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-xl transition shadow">
+                                    <i class="fab fa-whatsapp text-base"></i>
+                                    <span>Tanya / Pesan Kamar VIP</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIPE A1 - VVIP -->
+                    <div class="bg-gradient-to-b from-amber-50/50 to-white border-2 border-gold-600 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group relative">
+                        <div class="absolute top-0 right-0 bg-gold-700 text-white text-[10px] font-black uppercase px-3 py-1 rounded-bl-xl tracking-wider z-10 shadow">
+                            👑 VVIP Terluas
+                        </div>
+                        <div class="relative h-56 bg-gray-100 overflow-hidden cursor-pointer" onclick="openImageLightbox('{{ url_for('static', filename='img/brosur_vvip.jpg') }}', 'Brosur Resmi - Kamar A1 (VVIP) Rp 2.500.000/bln')">
+                            <img src="{{ url_for('static', filename='img/brosur_vvip.jpg') }}" alt="Brosur Kamar VVIP" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute top-3 left-3 bg-purple-700 text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+                                A1 (VVIP)
+                            </div>
+                            <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <i class="fas fa-search-plus"></i> Lihat Brosur
+                            </div>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-2">
+                                    <h4 class="text-lg font-bold text-gray-900 font-serif">Kamar A1 – VVIP</h4>
+                                    <span class="text-xs text-purple-700 font-semibold">1 Unit Eksklusif</span>
+                                </div>
+                                <div class="text-2xl font-black text-gold-600 mb-3">
+                                    Rp 2.500.000 <span class="text-xs font-normal text-gray-500">/ bulan</span>
+                                </div>
+                                <ul class="text-xs text-gray-600 space-y-2 mb-5">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Kamar paling luas & paling eksklusif</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Tempat tidur luas & nyaman</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>AC (Air Conditioner) + WiFi stabil</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Area kerja & meja rias luas</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Kamar mandi dalam bersih & privat</span></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <a href="https://wa.me/6281776555520?text=Halo%20Admin%20Gimina%20Kost,%20saya%20tertarik%20dengan%20*Kamar%20A1%20-%20VVIP%20(Rp2.500.000/bln)*%20di%20Gimina%20Kost%20Jatinangor.%20Apakah%20masih%20tersedia?" 
+                                   target="_blank" 
+                                   class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-xl transition shadow">
+                                    <i class="fab fa-whatsapp text-base"></i>
+                                    <span>Tanya / Pesan Kamar VVIP</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+            </div>
+
+            <!-- 2. GALERI FOTO RESMI GIMINA KOST JATINANGOR -->
+            <div class="mb-10 border-t border-gray-200 pt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 font-serif">Galeri Foto Suasana Kost</h3>
+                        <p class="text-xs sm:text-sm text-gray-500">Foto asli bangunan, kamar, lorong, dan fasilitas Gimina Kost Jatinangor.</p>
+                    </div>
+                    <span class="text-xs text-gray-400 font-medium">Klik foto untuk perbesar</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <!-- Foto 1: Gedung Tampak Depan -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/gedung_jatinangor.jpg') }}', 'Gedung Gimina Kost Jatinangor Tampak Depan')">
+                        <img src="{{ url_for('static', filename='img/gedung_jatinangor.jpg') }}" alt="Gedung Tampak Depan" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Tampak Depan Gedung
+                        </div>
+                    </div>
+
+                    <!-- Foto 2: Fasad & Gerbang Utama -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/fasad_jatinangor.jpg') }}', 'Fasad & Gerbang Akses Masuk Aman')">
+                        <img src="{{ url_for('static', filename='img/fasad_jatinangor.jpg') }}" alt="Fasad & Gerbang" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Gerbang & Akses Aman
+                        </div>
+                    </div>
+
+                    <!-- Foto 3: Kamar Reguler -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/kamar_reguler.jpg') }}', 'Interior Kamar Reguler Siap Huni Lengkap AC')">
+                        <img src="{{ url_for('static', filename='img/kamar_reguler.jpg') }}" alt="Kamar Reguler" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Kamar Reguler (B1–B18)
+                        </div>
+                    </div>
+
+                    <!-- Foto 4: Kamar VIP / VVIP -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/kamar_vvip.jpg') }}', 'Interior Kamar VVIP Luas & Nyaman')">
+                        <img src="{{ url_for('static', filename='img/kamar_vvip.jpg') }}" alt="Kamar VVIP" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Kamar VVIP / VIP
+                        </div>
+                    </div>
+
+                    <!-- Foto 5: Meja Kerja & Lemari -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/meja_rias.jpg') }}', 'Area Meja Kerja / Belajar & Lemari Luas')">
+                        <img src="{{ url_for('static', filename='img/meja_rias.jpg') }}" alt="Meja Belajar & Lemari" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Meja Belajar & Lemari
+                        </div>
+                    </div>
+
+                    <!-- Foto 6: Lorong Lantai 2 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/lorong_lantai2.jpg') }}', 'Lorong Kamar Lantai 2 Rapi, Tenang & Bersih')">
+                        <img src="{{ url_for('static', filename='img/lorong_lantai2.jpg') }}" alt="Lorong Lantai 2" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Lorong Lantai 2 Bersih
+                        </div>
+                    </div>
+
+                    <!-- Foto 7: Kamar Mandi Dalam -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/kamar_mandi.jpg') }}', 'Kamar Mandi Dalam Bersih & Air 24 Jam')">
+                        <img src="{{ url_for('static', filename='img/kamar_mandi.jpg') }}" alt="Kamar Mandi" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Kamar Mandi Dalam
+                        </div>
+                    </div>
+
+                    <!-- Foto 8: Area Parkiran Motor -->
+                    <div class="group relative rounded-xl overflow-hidden shadow h-40 sm:h-48 cursor-pointer bg-gray-100" onclick="openImageLightbox('{{ url_for('static', filename='img/parkiran_motor.jpg') }}', 'Area Parkir Motor Luas, Aman & Terlindungi')">
+                        <img src="{{ url_for('static', filename='img/parkiran_motor.jpg') }}" alt="Parkiran Motor" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-2 left-2 right-2 text-white text-[11px] font-semibold leading-tight">
+                            Parkir Motor & CCTV
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. STATUS KETERSEDIAAN NOMOR KAMAR (REAL-TIME) -->
+            <div class="border-t border-gray-200 pt-8">
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 font-serif">Ketersediaan Kamar Per Unit</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Pilih unit kamar yang masih tersedia atau daftar tunggu jika kamar impian Anda terisi.</p>
+                </div>
+
+                {% if not session.get('penghuni_id') %}
+                <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex items-start">
+                    <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <p class="text-sm font-medium">Reservasi Langsung via WhatsApp Admin</p>
+                        <p class="text-xs sm:text-sm mt-1">Anda dapat langsung menghubungi Admin via WhatsApp untuk cek status kamar, survei lokasi, atau mendaftar akun di portal.</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for room in rooms %}
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
+                        <div class="h-44 bg-gray-200 relative group cursor-pointer" onclick="openImageLightbox(
+                            {% if 'A1' in (room.room_number or '') or 'A-01' in (room.room_number or '') or 'VVIP' in (room.room_type or '') %}
+                                '{{ url_for('static', filename='img/kamar_vvip.jpg') }}'
+                            {% elif 'A2' in (room.room_number or '') or 'A3' in (room.room_number or '') or 'A-02' in (room.room_number or '') or 'VIP' in (room.room_type or '') %}
+                                '{{ url_for('static', filename='img/kamar_vip.jpg') }}'
+                            {% else %}
+                                '{{ url_for('static', filename='img/kamar_reguler.jpg') }}'
+                            {% endif %}, 'Kamar {{ room.room_number }} - {{ room.room_type or "Reguler" }}')">
+                            
+                            <img src="
+                                {% if 'A1' in (room.room_number or '') or 'A-01' in (room.room_number or '') or 'VVIP' in (room.room_type or '') %}
+                                    {{ url_for('static', filename='img/kamar_vvip.jpg') }}
+                                {% elif 'A2' in (room.room_number or '') or 'A3' in (room.room_number or '') or 'A-02' in (room.room_number or '') or 'VIP' in (room.room_type or '') %}
+                                    {{ url_for('static', filename='img/kamar_vip.jpg') }}
+                                {% else %}
+                                    {{ url_for('static', filename='img/kamar_reguler.jpg') }}
+                                {% endif %}" 
+                                alt="Kamar {{ room.room_number }}" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            
+                            <div class="absolute top-2 right-2 px-2.5 py-1 rounded text-xs font-bold uppercase
+                                {% if room.status == 'AVAILABLE' %} bg-green-500 text-white
+                                {% elif room.status == 'OCCUPIED' %} bg-red-500 text-white
+                                {% else %} bg-amber-500 text-white {% endif %}
+                            ">
+                                {% if room.status == 'AVAILABLE' %}Tersedia
+                                {% elif room.status == 'OCCUPIED' %}Terisi
+                                {% else %}{{ room.status }}{% endif %}
+                            </div>
+
+                            <div class="absolute top-2 left-2 px-2.5 py-1 rounded text-xs font-bold bg-black/60 text-white">
+                                {% if 'A1' in (room.room_number or '') or 'A-01' in (room.room_number or '') %}VVIP
+                                {% elif 'A2' in (room.room_number or '') or 'A3' in (room.room_number or '') or 'A-02' in (room.room_number or '') %}VIP
+                                {% else %}Reguler{% endif %}
+                            </div>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-900 font-serif">Kamar {{ room.room_number }}</h4>
+                                    <p class="text-xs text-gray-500 mt-0.5">
+                                        {% if room.room_type %}
+                                            {{ room.room_type }}
+                                        {% elif 'A1' in (room.room_number or '') or 'A-01' in (room.room_number or '') %}
+                                            Tipe A1 (VVIP)
+                                        {% elif 'A2' in (room.room_number or '') or 'A3' in (room.room_number or '') or 'A-02' in (room.room_number or '') %}
+                                            Tipe A (VIP)
+                                        {% else %}
+                                            Tipe B (Reguler)
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gold-600 font-bold text-lg my-2">
+                                {% if 'A1' in (room.room_number or '') or 'A-01' in (room.room_number or '') %}
+                                    Rp 2.500.000
+                                {% elif 'A2' in (room.room_number or '') or 'A3' in (room.room_number or '') or 'A-02' in (room.room_number or '') %}
+                                    Rp 2.200.000
+                                {% elif 'B' in (room.room_number or '') or 'JTG' in (room.room_number or '') %}
+                                    Rp 1.700.000
+                                {% else %}
+                                    Rp {{ "{:,.0f}".format(room.monthly_rate).replace(',', '.') }}
+                                {% endif %}
+                                <span class="text-xs text-gray-500 font-normal">/ bln</span>
+                            </p>
+                            
+                            <div class="text-xs text-gray-600 flex-1 mb-4">
+                                <span class="font-semibold block mb-1">Fasilitas:</span>
+                                {{ room.facilities or 'Kamar Mandi Dalam, AC, WiFi, Kasur, Lemari, Meja Belajar' }}
+                            </div>
+                            
+                            <div class="mt-auto space-y-2">
+                                {% if room.status == 'AVAILABLE' %}
+                                    <a href="https://wa.me/6281776555520?text=Halo%20Admin%20Gimina%20Kost,%20saya%20tertarik%20sewa%20*Kamar%20{{ room.room_number }}*%20di%20Gimina%20Kost%20Jatinangor.%20Apakah%20bisa%20survei%20dan%20booking?" 
+                                       target="_blank" 
+                                       class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-lg transition shadow-sm">
+                                        <i class="fab fa-whatsapp"></i> Chat Admin / Booking
+                                    </a>
+                                    {% if session.get('penghuni_id') %}
+                                        <a href="{{ url_for('ajukan_sewa', room_id=room.id) }}" class="block w-full text-center px-3 py-1.5 border border-gold-600 text-xs font-bold rounded-lg text-gold-600 hover:bg-gold-50 transition">
+                                            Ajukan via Akun Portal
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <button onclick="openModal('Kamar {{ room.room_number }} - {{ room.room_type or 'Reguler' }}')" class="block w-full text-center px-4 py-2 border border-gray-300 text-xs font-bold rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                                        Daftar Tunggu
+                                    </button>
+                                    <a href="https://wa.me/6281776555520?text=Halo%20Admin%20Gimina%20Kost,%20saya%20ingin%20tanya%20kapan%20*Kamar%20{{ room.room_number }}*%20Jatinangor%20tersedia%20kembali?" 
+                                       target="_blank" 
+                                       class="block w-full text-center text-[11px] text-green-700 font-semibold hover:underline mt-1">
+                                        Tanya Kapan Kosong via WA &rarr;
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             {% endif %}
         </div>
@@ -267,7 +553,30 @@
     </div>
 </div>
 
+<!-- Modal Lightbox Preview Foto & Brosur -->
+<div id="imageLightboxModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeImageLightbox()">
+    <div class="relative max-w-4xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+        <button type="button" onclick="closeImageLightbox()" class="absolute -top-11 right-0 text-white hover:text-gold-400 text-2xl font-bold p-2 focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="bg-black/60 rounded-2xl overflow-hidden shadow-2xl border border-white/20 p-2 max-h-[85vh] flex flex-col items-center">
+            <img id="lightboxImg" src="" alt="Preview" class="max-w-full max-h-[75vh] object-contain rounded-xl">
+            <p id="lightboxCaption" class="text-white text-xs sm:text-sm font-semibold mt-2.5 mb-1 px-3 text-center"></p>
+        </div>
+    </div>
+</div>
+
 <script>
+    function openImageLightbox(src, caption) {
+        document.getElementById('lightboxImg').src = src;
+        document.getElementById('lightboxCaption').textContent = caption || '';
+        document.getElementById('imageLightboxModal').classList.remove('hidden');
+    }
+
+    function closeImageLightbox() {
+        document.getElementById('imageLightboxModal').classList.add('hidden');
+    }
+
     function openModal(tipeKamar) {
         document.getElementById('modalTipeKamar').value = tipeKamar;
         document.getElementById('waitingListModal').classList.remove('hidden');
@@ -290,5 +599,13 @@
             input.required = false;
         }
     }
+
+    // Keyboard ESC to close modals
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeImageLightbox();
+            closeModal();
+        }
+    });
 </script>
 {% endblock %}
